@@ -60,7 +60,9 @@ def openai_embedding_generator_adapter(mocker):
         mocker.patch.object(
             EmbeddingsCache, "generate_embeddings", return_value=expected_embeddings
         )
-        return OpenAIEmbeddingGeneratorAdapter(model="text-embedding-ada-002")
+        return OpenAIEmbeddingGeneratorAdapter(
+            model="text-embedding-ada-002", api_key="testing"
+        )
 
     return _adapter
 
@@ -92,7 +94,9 @@ def embeddings_cache_with_mocked_generator(mocked_embedding_generator):
 
 @pytest.fixture
 def adapter_with_mocked_cache(embeddings_cache_with_mocked_generator):
-    adapter = OpenAIEmbeddingGeneratorAdapter(model="text-embedding-ada-002")
+    adapter = OpenAIEmbeddingGeneratorAdapter(
+        model="text-embedding-ada-002", api_key="testing"
+    )
     adapter.embeddings_cache = embeddings_cache_with_mocked_generator
     return adapter
 
@@ -150,7 +154,9 @@ def mock_openai_api_response(mocker):
 @pytest.fixture
 def adapter_with_faulty_cache(mock_openai_api_error):
     """Fixture to create an OpenAIEmbeddingGeneratorAdapter with a faulty cache."""
-    adapter = OpenAIEmbeddingGeneratorAdapter(model="text-embedding-ada-002")
+    adapter = OpenAIEmbeddingGeneratorAdapter(
+        model="text-embedding-ada-002", api_key="testing"
+    )
     adapter.embeddings_cache = EmbeddingsCache(
         embeddings_generator=mock_openai_api_error
     )
