@@ -34,9 +34,7 @@ import atexit
 import os
 import pickle
 
-from det.embeddings.generator import (
-    EmbeddingGenerator,
-)  # General import for type hinting
+from det.embeddings.generator import EmbeddingGenerator
 
 
 class EmbeddingsCache:
