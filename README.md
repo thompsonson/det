@@ -24,11 +24,11 @@ Below are some screenshots showcasing the framework in action:
 
 ### GPT-3.5 Example
 
-![GPT-3.5 Analysis](docs/img/GPT3.5.png)
+![GPT-3.5 Analysis](https://raw.githubusercontent.com/thompsonson/det/main/docs/img/GPT3.5.png)
 
 ### GPT-4 Example
 
-![GPT-4 Analysis](docs/img/GPT4.png)
+![GPT-4 Analysis](https://raw.githubusercontent.com/thompsonson/det/main/docs/img/GPT4.png)
 
 These visuals provide a glimpse into how the framework processes and presents data from different LLM versions, highlighting the flexibility and depth of analysis possible with this tool.
 

@@ -25,10 +25,24 @@ class EmbeddingGeneratorAdapterInterface(ABC):
 
 
 class OpenAIEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
-    def __init__(self, model="text-embedding-ada-002"):
+    def __init__(
+        self,
+        model="text-embedding-ada-002",
+        embedding_generator=None,
+        cache_file_path=None,
+    ):
         super().__init__(model)
+
+        # Allow passing a specific embedding_generator; otherwise, use the default
+        self.embedding_generator = (
+            embedding_generator
+            if embedding_generator
+            else OpenAIEmbeddingGenerator(model=model)
+        )
+
         self.embeddings_cache = EmbeddingsCache(
-            embeddings_generator=self.embedding_generator
+            embeddings_generator=self.embedding_generator,
+            cache_file_path=cache_file_path,
         )
 
     def _create_embedding_generator(self) -> EmbeddingGeneratorInterface:

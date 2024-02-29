@@ -31,19 +31,25 @@ requests.
 
 
 import atexit
+import logging
 import os
 import pickle
 
+
 from det.embeddings.generator import EmbeddingGeneratorInterface
+
+logger = logging.getLogger(__name__)
 
 
 class EmbeddingsCache:
     def __init__(
         self,
         embeddings_generator: EmbeddingGeneratorInterface,
-        cache_file_path="embeddings_cache.pkl",
+        cache_file_path,
     ):
-        self.cache_file_path = cache_file_path
+        self.cache_file_path = (
+            cache_file_path if cache_file_path else "embeddings_cache.pkl"
+        )
         self.embeddings_generator = (
             embeddings_generator  # Directly use the passed embeddings generator
         )
@@ -52,10 +58,22 @@ class EmbeddingsCache:
 
     def _load_cache(self):
         """Load the cache from a file if it exists, otherwise return an empty dictionary."""
+        logger.debug(f"Attempting to load cache from: {self.cache_file_path}")
         if os.path.exists(self.cache_file_path):
-            with open(self.cache_file_path, "rb") as cache_file:
-                return pickle.load(cache_file)
+            try:
+                with open(self.cache_file_path, "rb") as cache_file:
+                    cache = pickle.load(cache_file)
+                    logger.info(
+                        f"Cache loaded successfully from: {self.cache_file_path}"
+                    )
+                    return cache
+            except EOFError:
+                logger.warning(
+                    f"Cache file exists but is empty: {self.cache_file_path}"
+                )
+                return {}
         else:
+            logger.info(f"Cache file does not exist: {self.cache_file_path}")
             return {}
 
     def generate_embeddings(self, texts):
@@ -64,9 +82,12 @@ class EmbeddingsCache:
         texts_without_embeddings = []
 
         for text in texts:
+            print(f"Checking cache for text: {text}")
             if text in self.embeddings_cache:
+                print("Cache hit for text.")
                 embeddings_to_return.append(self.embeddings_cache[text])
             else:
+                print("Cache miss for text.")
                 texts_without_embeddings.append(text)
 
         if texts_without_embeddings:
@@ -75,7 +96,10 @@ class EmbeddingsCache:
             )
             for text, embedding in zip(texts_without_embeddings, new_embeddings):
                 self.embeddings_cache[text] = embedding
+                print(f"Added new embeddings to cache for text: {text}")
                 embeddings_to_return.append(embedding)
+
+        print(f"embeddings_to_return: {embeddings_to_return}")
 
         return embeddings_to_return
 
