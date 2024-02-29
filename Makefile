@@ -18,6 +18,5 @@ check_style:
 	@poetry run ruff check .
 
 check_format:
-	@echo "Checking formatting with isort and ruff..."
+	@echo "Checking formatting with ruff..."
 	@poetry run ruff format --check
-	@poetry run isort . --check-only

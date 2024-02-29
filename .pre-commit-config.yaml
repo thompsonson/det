@@ -29,3 +29,16 @@ repos:
         args: [ --fix ]
       # Run the formatter.
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: make-check_style
+        name: make check_style
+        entry: make check_style
+        language: system
+        stages: [commit]
+      - id: make-check_format
+        name: make check_format
+        entry: make check_format
+        language: system
+        stages: [commit]

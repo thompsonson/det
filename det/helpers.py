@@ -53,7 +53,7 @@ def _get_client_class(module_path: str, class_name: str):
     return getattr(module, class_name)
 
 
-def get_llm_client(llm_provider: str, llm_model: str):
+def get_llm_client(llm_provider: str, llm_model: str, api_key: str = None):
     if not llm_provider:
         raise ValueError(f"Could not import class for {llm_provider}")
     if not llm_model:
@@ -66,7 +66,10 @@ def get_llm_client(llm_provider: str, llm_model: str):
         # Dynamically import the client class from the constructed module path
         ClientClass = _get_client_class(module_path, class_name)
         # Instantiate the client class, assuming a constructor that takes a model parameter
-        return ClientClass(model=llm_model)
+        if api_key:
+            return ClientClass(model=llm_model, api_key=api_key)
+        else:
+            return ClientClass(model=llm_model)
     except ImportError as e:
         # Handle cases where the module or class does not exist
         raise ImportError(f"Could not import {class_name} from {module_path}: {e}")
