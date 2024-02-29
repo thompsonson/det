@@ -11,7 +11,7 @@ install:
 
 test:
 	@echo "Running tests..."
-	@poetry run pytest
+	@poetry run pytest -o log_cli=true --log-cli-level=DEBUG
 
 check_style:
 	@echo "Checking style with ruff..."

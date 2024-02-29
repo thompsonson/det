@@ -1,51 +1,32 @@
-"""
-Embedding Generators Module
-
-# embeddings/generator.py
-
-This module offers a flexible approach to generating text embeddings, allowing for easy integration
-and use of various embedding models, including OpenAI's API. It is designed to support extensible
-embedding generation strategies through the use of an abstract base class and concrete
-implementations.
-
-Example usage:
-
-    from embeddings.generator import OpenAIEmbeddingGenerator
-
-    # Initialize the embedding generator with an optional model specification
-    embedding_generator = OpenAIEmbeddingGenerator(model="text-embedding-ada-002")
-
-    # Generate embeddings for a list of texts
-    embeddings = embedding_generator.generate_embeddings(["Hello, world!", "How are you?"])
-    print(embeddings)
-
-The module provides the `EmbeddingGenerator` abstract base class to define a common interface for
-all embedding generators. Implementations of this class, such as `OpenAIEmbeddingGenerator`, use
-specific APIs or models to generate embeddings. This structure allows for easy extension to include
-more generators based on different services or custom embedding models.
-
-Classes:
-- `EmbeddingGenerator`: An abstract base class for embedding generators. It requires
-  the implementation of a `generate_embeddings` method.
-- `OpenAIEmbeddingGenerator`: A concrete implementation of `EmbeddingGenerator` that
-  utilizes OpenAI's API to produce embeddings. It allows specifying the model to be
-  used.
-- `AnotherEmbeddingGenerator`: A placeholder for additional embedding generator
-  implementations, showcasing the module's extensibility.
-
-This module is designed with flexibility and extensibility in mind, enabling developers to
-seamlessly integrate different embedding generation techniques and models as required by their
-applications.
-"""
-
+# det/embeddings/generator.py
 
 from abc import ABC, abstractmethod
 from typing import List
+import logging
 
 from openai import OpenAI
 
 
+logger = logging.getLogger(__name__)
+
+
 class EmbeddingGeneratorInterface(ABC):
+    """
+    An abstract base class defining the contract for embedding generators.
+    """
+
+    @abstractmethod
+    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """
+        Generate embeddings for a list of texts.
+
+        :param texts: A list of strings for which to generate embeddings.
+        :return: A list of embeddings for each input text.
+        """
+        pass
+
+
+class EmbeddingGenerator(EmbeddingGeneratorInterface):
     """
     Abstract base class for embedding generators.
     """
@@ -66,14 +47,27 @@ class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
     Embedding generator using OpenAI's API.
     """
 
-    def __init__(self, model: str = "text-embedding-ada-002"):
+    def __init__(self, model: str = "text-embedding-ada-002", api_key: str = None):
         """
         Initialize the OpenAI embedding generator.
 
         :param model: The model to use for generating embeddings.
+        :param api_key: The API key for accessing the OpenAI API.
         """
         self.model = model
-        self.client = OpenAI()
+        self._instantiate_openai_client(api_key)
+
+    def _instantiate_openai_client(self, api_key: str):
+        try:
+            if api_key:
+                self.client = OpenAI(api_key=api_key)
+                logger.info("OpenAI client instantiated successfully using api_key.")
+            else:
+                self.client = OpenAI()
+                logger.info("OpenAI client instantiated successfully without api_key.")
+        except Exception as e:
+            logger.error(f"Error instantiating OpenAI client: {str(e)}")
+            self.client = None
 
     def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
@@ -82,8 +76,12 @@ class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
         :param texts: A list of strings for which to generate embeddings.
         :return: A list of embeddings.
         """
-        response = self.client.embeddings.create(input=texts, model=self.model)
-        return [embedding.embedding for embedding in response.data]
+        try:
+            response = self.client.embeddings.create(input=texts, model=self.model)
+            return [embedding.embedding for embedding in response.data]
+        except Exception as e:
+            logger.error(f"Error generating embeddings: {str(e)}")
+            return []
 
 
 class AnotherEmbeddingGenerator(EmbeddingGeneratorInterface):
