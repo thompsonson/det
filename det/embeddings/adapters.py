@@ -1,70 +1,53 @@
-"""
-Embeddings Adapter Module
-
-# embeddings/adapters.py
-
-This module provides a collection of adapter classes that implement the EmbeddingGeneratorInterface
-to generate text embeddings using various external services or models, with an emphasis on
-extensibility and caching capabilities to enhance performance.
-
-The adapters act as intermediaries between the abstract interface and concrete embedding generation
-mechanisms, allowing for flexible integration of different embedding sources without modifying
-client code. This modular approach simplifies the process of adding new embedding generators or
-switching between them.
-
-Example usage:
-
-    from embeddings.adapters import OpenAIEmbeddingGeneratorAdapter
-
-    # Initialize the adapter with a specific model
-    embedding_adapter = OpenAIEmbeddingGeneratorAdapter(model="text-embedding-ada-002")
-
-    # Generate embeddings for a list of texts
-    embeddings = embedding_adapter.generate_embeddings(["Sample text for embedding."])
-
-    print(embeddings)
-    # The adapter utilizes an internal cache to store and retrieve embeddings, reducing
-    # the number of external requests and speeding up the process for repeated inputs.
-
-Classes:
-    - EmbeddingGeneratorInterface: An abstract base class defining the contract for
-        embedding generators.
-    - OpenAIEmbeddingGeneratorAdapter: An adapter for the OpenAI Embedding Generator,
-        with caching support.
-    - AnotherEmbeddingGenerator: A template for additional embedding generator implementations.
-
-The module demonstrates the use of the Adapter Design Pattern to facilitate the interaction between
-high-level operations and external libraries or APIs. It ensures that changes in the embedding
-generation services have minimal impact on the application code, promoting maintainability
-and scalability.
-
-"""
-
-
 from abc import ABC, abstractmethod
+from typing import List
 
 from det.embeddings.cache import EmbeddingsCache
-from det.embeddings.generator import OpenAIEmbeddingGenerator
+from det.embeddings.generator import (
+    EmbeddingGeneratorInterface,
+    OpenAIEmbeddingGenerator,
+)
 
 
-class EmbeddingGeneratorInterface(ABC):
+class EmbeddingGeneratorAdapterInterface(ABC):
+    def __init__(self, model: str):
+        self.model = model
+        self.embedding_generator: EmbeddingGeneratorInterface = (
+            self._create_embedding_generator()
+        )
+
     @abstractmethod
-    def generate_embeddings(self, texts):
+    def _create_embedding_generator(self) -> EmbeddingGeneratorInterface:
+        pass
+
+    @abstractmethod
+    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         pass
 
 
-class OpenAIEmbeddingGeneratorAdapter(EmbeddingGeneratorInterface):
+class OpenAIEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
     def __init__(self, model="text-embedding-ada-002"):
-        self.embedding_generator = OpenAIEmbeddingGenerator(model=model)
+        super().__init__(model)
         self.embeddings_cache = EmbeddingsCache(
             embeddings_generator=self.embedding_generator
         )
 
-    def generate_embeddings(self, texts):
+    def _create_embedding_generator(self) -> EmbeddingGeneratorInterface:
+        # Ensure the OpenAIEmbeddingGenerator class implements EmbeddingGeneratorInterface
+        return OpenAIEmbeddingGenerator(model=self.model)
+
+    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         return self.embeddings_cache.generate_embeddings(texts)
 
 
-class AnotherEmbeddingGenerator(EmbeddingGeneratorInterface):
-    def generate_embeddings(self, texts):
+class AnotherEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
+    def __init__(self, model):
+        super().__init__(model)
+        # Additional setup if necessary
+
+    def _create_embedding_generator(self) -> EmbeddingGeneratorInterface:
+        # Return an instance of another class that implements EmbeddingGeneratorInterface
+        pass
+
+    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         # Implementation for another source of embeddings
         pass

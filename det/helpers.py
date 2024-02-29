@@ -54,6 +54,11 @@ def _get_client_class(module_path: str, class_name: str):
 
 
 def get_llm_client(llm_provider: str, llm_model: str):
+    if not llm_provider:
+        raise ValueError(f"Could not import class for {llm_provider}")
+    if not llm_model:
+        raise ValueError(f"Model is not given: {llm_model}")
+
     module_path = f"det.llm.llm_{llm_provider.lower()}"
     class_name = f"{llm_provider}Client"
 

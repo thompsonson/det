@@ -1,4 +1,4 @@
-name: Setup Poetry Environment and check formatting and style
+name: Setup Poetry, check formatting and style, and run the tests
 
 on: [push, pull_request]
 
@@ -33,3 +33,6 @@ jobs:
 
     - name: Run Style Checks
       run: make check_style
+
+    - name: Run the tests
+      run: make test
