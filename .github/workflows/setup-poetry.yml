@@ -1,0 +1,29 @@
+name: Setup Poetry Environment
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry
+      run: make cicd_setup
+
+    - name: Install dependencies
+      run: make install
+
+    - name: Cache Poetry virtualenv
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: ${{ runner.os }}-py${{ matrix.python-version }}-venv-${{ hashFiles('**/poetry.lock') }}
