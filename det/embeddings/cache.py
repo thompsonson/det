@@ -34,15 +34,13 @@ import atexit
 import os
 import pickle
 
-from det.embeddings.generator import (
-    EmbeddingGenerator,
-)  # General import for type hinting
+from det.embeddings.generator import EmbeddingGeneratorInterface
 
 
 class EmbeddingsCache:
     def __init__(
         self,
-        embeddings_generator: EmbeddingGenerator,
+        embeddings_generator: EmbeddingGeneratorInterface,
         cache_file_path="embeddings_cache.pkl",
     ):
         self.cache_file_path = cache_file_path

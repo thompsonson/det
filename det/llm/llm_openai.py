@@ -27,18 +27,20 @@ from det.llm.base import BaseLLMClient
 
 
 class OpenAIClient(BaseLLMClient):
-
     """
     Example:
     --------
-        llm_client = OpenAIClient(model="text-davinci-003")
+        llm_client = OpenAIClient(model="text-davinci-003", api_key="your_api_key_here")
         prompt = "Explain the significance of abstract classes in object-oriented programming."
         response = llm_client.generate_response(prompt, temperature=0.5, max_tokens=100)
         print(response)
     """
 
-    def __init__(self, model: str = "gpt-3.5-turbo"):
-        self.client = OpenAI()
+    def __init__(self, model: str = "gpt-3.5-turbo", api_key: str = None):
+        if api_key:
+            self.client = OpenAI(api_key=api_key)
+        else:
+            self.client = OpenAI()
         self.model = model
 
     def generate_response(self, prompt: str, **kwargs):

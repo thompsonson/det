@@ -45,7 +45,7 @@ from typing import List
 from openai import OpenAI
 
 
-class EmbeddingGenerator(ABC):
+class EmbeddingGeneratorInterface(ABC):
     """
     Abstract base class for embedding generators.
     """
@@ -61,7 +61,7 @@ class EmbeddingGenerator(ABC):
         raise NotImplementedError("This method should be implemented by subclasses.")
 
 
-class OpenAIEmbeddingGenerator(EmbeddingGenerator):
+class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
     """
     Embedding generator using OpenAI's API.
     """
@@ -86,7 +86,7 @@ class OpenAIEmbeddingGenerator(EmbeddingGenerator):
         return [embedding.embedding for embedding in response.data]
 
 
-class AnotherEmbeddingGenerator(EmbeddingGenerator):
+class AnotherEmbeddingGenerator(EmbeddingGeneratorInterface):
     """
     Placeholder class for another embedding generator.
     """
