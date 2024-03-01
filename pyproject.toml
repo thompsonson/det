@@ -45,4 +45,4 @@ major_on_zero = false
 branch = "main"
 upload_to_PyPI = true
 upload_to_release = true
-build_command = "make cicd_setup && make install && poetry build"
+build_command = "make cicd_setup && make install && poetry build && poetry publish"
