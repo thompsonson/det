@@ -29,3 +29,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 det = "det.main:app"
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"
+upload_to_pypi = true
+branch = "main"
+repository = "https://github.com/thompsonson/det"
