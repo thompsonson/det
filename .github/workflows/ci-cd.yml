@@ -36,3 +36,27 @@ jobs:
 
     - name: Run the tests
       run: make test
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Important for semantic-release to analyze commits
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install python-semantic-release
+        run: pip install python-semantic-release
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Actions, no need to create it
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}  # This token should be created in PyPI and set in your repo's secrets
+        run: |
+          semantic-release publish

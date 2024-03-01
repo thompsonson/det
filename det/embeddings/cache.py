@@ -82,12 +82,11 @@ class EmbeddingsCache:
         texts_without_embeddings = []
 
         for text in texts:
-            print(f"Checking cache for text: {text}")
             if text in self.embeddings_cache:
-                print("Cache hit for text.")
+                logger.debug("Cache hit for text.")
                 embeddings_to_return.append(self.embeddings_cache[text])
             else:
-                print("Cache miss for text.")
+                logger.debug("Cache miss for text.")
                 texts_without_embeddings.append(text)
 
         if texts_without_embeddings:
@@ -96,10 +95,8 @@ class EmbeddingsCache:
             )
             for text, embedding in zip(texts_without_embeddings, new_embeddings):
                 self.embeddings_cache[text] = embedding
-                print(f"Added new embeddings to cache for text: {text}")
+                logger.debug("Added new embeddings to cache")
                 embeddings_to_return.append(embedding)
-
-        print(f"embeddings_to_return: {embeddings_to_return}")
 
         return embeddings_to_return
 

@@ -23,10 +23,10 @@ BaseLLMClient interface, promoting a plug-and-play architecture for text generat
 
 from openai import OpenAI
 
-from det.llm.base import BaseLLMClient
+from det.llm.base import LLMGeneratorInterface
 
 
-class OpenAIClient(BaseLLMClient):
+class OpenAIClient(LLMGeneratorInterface):
     """
     Example:
     --------
