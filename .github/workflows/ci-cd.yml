@@ -47,6 +47,8 @@ jobs:
       run: make test
 
   release:
+    permissions:
+      contents: write
     needs: test
     runs-on: ubuntu-latest
     if: |
