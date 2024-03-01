@@ -3,6 +3,75 @@
 
 
 
+
+## v0.2.0 (2024-03-01)
+
+### Ci
+
+* ci: Ignore errors from files already existing in the repository.
+
+ci: Ignore errors from files already existing in the repository. ([`dc207de`](https://github.com/thompsonson/det/commit/dc207de05a4018c7649646de7c43062754b4ddef))
+
+* ci: Ignore errors from files already existing in the repository. ([`e33f664`](https://github.com/thompsonson/det/commit/e33f664ae3beee10a3e71c60cff3ad5c9c81bb0f))
+
+* ci: updating workflow
+
+ci: updating workflow ([`5fbbb1f`](https://github.com/thompsonson/det/commit/5fbbb1fc86398286d8be101dc8697b56d6a7d224))
+
+* ci: updating workflow ([`21299c2`](https://github.com/thompsonson/det/commit/21299c20da6f280026291a174ec9f22082abbdfb))
+
+### Feature
+
+* feat(publish): automagic publishing of the python package
+
+feat(publish): automagic publishing of the python package ([`a240b26`](https://github.com/thompsonson/det/commit/a240b263a729722d3ba5cdf01d958869cad5b1ec))
+
+* feat(publish): automagic publishing of the python package ([`0747d8c`](https://github.com/thompsonson/det/commit/0747d8c27ff81bd154646926c6e6fe6c78a09e06))
+
+### Fix
+
+* fix: patch to give write permissions to the Action
+
+fix: patch to give write permissions to the Action ([`da465dc`](https://github.com/thompsonson/det/commit/da465dcb6172c5b31dc0b68bc8de9c8da82c139f))
+
+* fix: patch to give write permissions to the Action ([`0b3ab06`](https://github.com/thompsonson/det/commit/0b3ab069186dcc41594da3a190a5cf0d8790aa3e))
+
+* fix: patch update to trigger version 0.2.1
+
+fix: patch update to trigger version 0.2.1 ([`1f07b09`](https://github.com/thompsonson/det/commit/1f07b0943f0cd5a1400828f4fe5e14ede5441ccc))
+
+* fix: patch update to trigger version 0.2.1 ([`2d064e6`](https://github.com/thompsonson/det/commit/2d064e6bb23b7f9612ac5962bc9b23b12af9ae19))
+
+* fix(changelog): correcting the template
+
+fix(changelog): correcting the template ([`7a0d9e0`](https://github.com/thompsonson/det/commit/7a0d9e044f710bfe7ea5384dcd46250ac6de34de))
+
+* fix(changelog): correcting the template ([`0597e4e`](https://github.com/thompsonson/det/commit/0597e4e2f43e2728a8808e748c52b3e2cccd683b))
+
+* fix: adding the GH token and setting the build command to not reinstall poetry
+
+fix: adding the GH token and setting the build command to not reinsta… ([`52a8428`](https://github.com/thompsonson/det/commit/52a842823ad2371be0d50eb1961444ef03aa94c4))
+
+* fix: adding the GH token and setting the build command to not reinstall poetry ([`8ff869e`](https://github.com/thompsonson/det/commit/8ff869ecc53b22624767719df2b34756dce02f48))
+
+* fix: adding the PyPi token to poetry config
+
+fix: adding the PyPi token to poetry config ([`8830ab6`](https://github.com/thompsonson/det/commit/8830ab69b896242f0d5de002b20558bcf7b7598f))
+
+* fix: adding the PyPi token to poetry config ([`d589ab9`](https://github.com/thompsonson/det/commit/d589ab90d796fa429152e308442bc49eef60fddb))
+
+* fix: correcting config for python-semantic-release to work with poetry
+
+fix: correcting config for python-semantic-release to work with poetry ([`c0a3282`](https://github.com/thompsonson/det/commit/c0a3282d5d981c08a40135e20f2fdc9c6d3195f5))
+
+* fix: correcting config for python-semantic-release to work with poetry ([`362ccd9`](https://github.com/thompsonson/det/commit/362ccd999bf8a4427b1807c6d73b121664003460))
+
+### Unknown
+
+* doc: What&#39;s Changed section in the CHANGELOG.md ([`f151beb`](https://github.com/thompsonson/det/commit/f151beb4ed6135168b69e091f36fc4f8a82967df))
+
+* doc: What&#39;s Changed section in the CHANGELOG.md ([`f549190`](https://github.com/thompsonson/det/commit/f549190f302b5dfc7407ae164924f845326ea286))
+
 ## v0.1.0 (2024-03-01)
 
 ### Ci
