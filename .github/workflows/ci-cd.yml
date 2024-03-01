@@ -80,4 +80,4 @@ jobs:
           echo "versioning and publishing the package"
           poetry config pypi-token.pypi $PYPI_TOKEN
           poetry run semantic-release version
-          poetry run semantic-release publish --skip-existing
+          poetry publish --skip-existing
