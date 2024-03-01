@@ -4,6 +4,16 @@
 
 
 
+## v0.2.1 (2024-03-01)
+
+### Fix
+
+* fix: publishing from poetry (rather than semantic-release)
+
+fix: publishing from poetry (rather than semantic-release) ([`f5a6f96`](https://github.com/thompsonson/det/commit/f5a6f96b29d266211aabbadc7672c2b5bf582a8c))
+
+* fix: publishing from poetry (rather than semantic-release) ([`5ac6e7c`](https://github.com/thompsonson/det/commit/5ac6e7ce0caa8db60eee725c2efbc9318f21d835))
+
 ## v0.2.0 (2024-03-01)
 
 ### Ci
