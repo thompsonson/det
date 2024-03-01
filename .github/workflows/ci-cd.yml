@@ -55,7 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Important for semantic-release to analyze commits
+          fetch-depth: 0  # Fetch all history for all tags and branches
+          ref: refs/heads/main  # specify the main branch explicitly
 
       - name: Set up Python
         uses: actions/setup-python@v2

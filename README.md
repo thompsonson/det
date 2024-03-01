@@ -1,3 +1,5 @@
+[![Setup Poetry, check formatting and style, and run the tests](https://github.com/thompsonson/det/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/thompsonson/det/actions/workflows/ci-cd.yml)
+
 # LLM Response Analysis Framework
 
 Welcome to a LLM Response Analysis Framework! This tool is designed to dive deep into the heart of Language Models (LLMs) and their intriguing responses. Designed for researchers, developers, and LLM enthusiasts, the framework offers a way to examine the consistency of Large Language Models and Agents build on them.
