@@ -72,6 +72,7 @@ jobs:
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Actions, no need to create it
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Actions, no need to create it
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}  # This token should be created in PyPI and set in your repo's secrets
         run: |
           poetry config pypi-token.pypi $PYPI_TOKEN
