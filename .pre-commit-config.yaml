@@ -1,4 +1,4 @@
-exclude: '^docs/|/migrations/|devcontainer.json'
+exclude: '^docs/|/migrations/|devcontainer.json|CHANGELOG.md'
 default_stages: [commit]
 
 default_language_version:
