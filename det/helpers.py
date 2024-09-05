@@ -87,3 +87,21 @@ def get_embedding_generator_adapter(embeddings_provider: str, embeddings_model: 
     except ImportError as e:
         # Handle cases where the module or class does not exist
         raise ImportError(f"Could not import {class_name} from {module_path}: {e}")
+
+
+def dynamic_import(class_path, init_obj=None):
+    """Dynamically imports a class and optionally initializes it.
+
+    Args:
+        class_path (str): The full path to the class (e.g., 'module.submodule.ClassName').
+        init_obj (optional): An object to pass to the class constructor.
+
+    Returns:
+        The imported class, or an instance of it if init_obj is provided.
+    """
+    module_name, class_name = class_path.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    cls = getattr(module, class_name, None)
+    if cls and init_obj is not None:
+        return cls(pydantic_object=init_obj)
+    return cls

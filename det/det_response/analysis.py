@@ -57,8 +57,8 @@ dynamics.
 
 """
 
-
 from difflib import ndiff
+from deepdiff import DeepDiff
 
 from det.det_response.semantic_distance import SemanticDistanceCalculator
 
@@ -71,15 +71,26 @@ class ResponseAnalysis:
         self.base_response = responses[0] if responses else None
         self.response_counts = self.group_and_count_responses()
         self.semantic_distance_calculator = semantic_distance_calculator
-        self.semantic_similarities = self.calculate_semantic_similarities()
+        # self.semantic_similarities = self.calculate_semantic_similarities()
+
+    def deep_diff_responses(self):
+        diffs = []
+        for response in self.responses[1:]:  # Skip the base response
+            diff = DeepDiff(
+                self.base_response, response, ignore_order=True, verbose_level=2
+            )
+            diffs.append(diff)
+        return diffs
 
     def group_and_count_responses(self):
         response_counts = {}
         for response in self.responses:
-            if response in response_counts:
-                response_counts[response] += 1
+            # Convert the response to a string or another suitable representation
+            response_key = str(response)
+            if response_key in response_counts:
+                response_counts[response_key] += 1
             else:
-                response_counts[response] = 1
+                response_counts[response_key] = 1
         return response_counts
 
     def highlight_differences_char(self):

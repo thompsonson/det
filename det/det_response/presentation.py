@@ -50,7 +50,6 @@ for anyone looking to present textual analysis results in a professional and eng
 
 """
 
-
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
@@ -59,9 +58,46 @@ from det.det_response.analysis import ResponseAnalysis
 
 
 class ResponsePresenter:
-    def __init__(self, analysis: ResponseAnalysis):
+    def __init__(self, analysis: ResponseAnalysis, model_class):
         self.analysis = analysis
         self.console = Console()
+        self.model_class = model_class
+
+    def display_deep_diff_table(self, deep_diff_output):
+        """
+        Displays the differences captured by deep_diff_responses in a table format.
+
+        :param deep_diff_output: The output from the deep_diff_responses method.
+        """
+        table = Table(title="Response Differences Overview")
+        table.add_column("Field", style="cyan", no_wrap=True)
+        table.add_column("Old Value", style="magenta")
+        table.add_column("New Value", style="green")
+
+        # Assuming deep_diff_output is a list of dictionaries as shown in the provided output
+        for diff in deep_diff_output:
+            if "values_changed" in diff:
+                for key, change in diff["values_changed"].items():
+                    # Transform the key to a more readable format if necessary
+                    readable_key = self._transform_key(key)
+                    old_value = change.get("old_value")
+                    new_value = change.get("new_value")
+
+                    # Adding rows to the table for each changed field
+                    table.add_row(readable_key, str(old_value), str(new_value))
+
+        self.console.print(table)
+
+    def _transform_key(self, key):
+        # Assuming 'key' format is something like "root[0]" and it directly maps to the model fields order
+        index = int(key.split("[")[1].split("]")[0])  # Extract index
+
+        # Fetch all field names from the model class dynamically
+        field_names = list(self.model_class.__fields__.keys())
+
+        if 0 <= index < len(field_names):
+            return field_names[index]
+        return "Unknown Field"
 
     def display_responses_and_differences_table(self):
         table = Table(title="Response Counts, Differences, and Semantic Similarity")
