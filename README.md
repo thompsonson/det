@@ -74,7 +74,12 @@ To get a list of all the arguments and their descriptions, use:
 a basic analysis of OpenAI's gpt-4o-mini model
 
 ```bash
-det check-responses --iterations 2 --llm-provider OpenAI --llm-model gpt-4o-mini --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002
+det check-responses \
+  --iterations 2 \
+  --llm-provider OpenAI \
+  --llm-model gpt-4o-mini \
+  --embeddings-provider OpenAI \
+  --embeddings-model text-embedding-ada-002
 ```
 
 ### LangChain Chains
