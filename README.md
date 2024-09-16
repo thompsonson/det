@@ -82,11 +82,11 @@ det check-responses \
   --embeddings-model text-embedding-ada-002
 ```
 
-### LangChain Chains
+### LangChain Structured Output Chains
 
-a LangChain Structure Output example
+a LangChain Structured Output example
 
-note, this requires the prompt details [/resources/prompt.json](/resources/prompt.json) and a pydantic output class [/resources/risk_definition.py](/resources/risk_definition.py)
+note, this requires the prompt details [/resources/prompt.json](/resources/prompts.json) and a pydantic output class [/resources/risk_definition.py](/resources/risk_definition.py)
 
 ```bash
 det check-chain \
