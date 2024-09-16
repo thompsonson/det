@@ -73,7 +73,9 @@ To get a list of all the arguments and their descriptions, use:
 
 a basic analysis of OpenAI's gpt-4o-mini model
 
-`det check-responses --iterations 2 --llm-provider OpenAI --llm-model gpt-4o-mini --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002`
+```bash
+det check-responses --iterations 2 --llm-provider OpenAI --llm-model gpt-4o-mini --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002
+```
 
 ### LangChain Chains
 
@@ -81,11 +83,17 @@ a LangChain Structure Output example
 
 note, this requires the prompt details [/resources/prompt.json](/resources/prompt.json) and a pydantic output class [/resources/risk_definition.py](/resources/risk_definition.py)
 
-`det check-chain --iterations 20 --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002 --prompt-config ./resources/prompts.json --prompt-group RiskDefinition --input-variables-str "risk_statement=There is a risk that failure to enforce multi-factor authentication can cause unauthorized access to user accounts to occur, leading to account takeover that could lead to financial fraud and identity theft issues for customers."`
-
+```bash
+det check-chain \
+  --iterations 20 \
+  --embeddings-provider OpenAI \
+  --embeddings-model text-embedding-ada-002 \
+  --prompt-config ./resources/prompts.json \
+  --prompt-group RiskDefinition \
+  --input-variables-str "risk_statement=There is a risk that failure to enforce multi-factor authentication can cause unauthorized access to user accounts to occur, leading to account takeover that could lead to financial fraud and identity theft issues for customers."
+```
 
 ## Development
-
 
 ### Prerequisites
 - [Python 3](https://www.python.org/downloads/)

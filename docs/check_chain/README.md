@@ -5,7 +5,13 @@ The `check-chain` command is part of the `det` project, which uses LangChain to 
 ## Command Structure
 
 ```bash
-det check-chain --iterations <num> --embeddings-provider <provider> --embeddings-model <model> --prompt-config <path> --prompt-group <group> --input-variables-str <input>
+det check-chain \
+  --iterations <num> \
+  --embeddings-provider <provider> \
+  --embeddings-model <model> \
+  --prompt-config <path> \
+  --prompt-group <group> \
+  --input-variables-str <input>
 ```
 
 ### Parameters
@@ -20,7 +26,13 @@ det check-chain --iterations <num> --embeddings-provider <provider> --embeddings
 ## Example Usage
 
 ```bash
-det check-chain --iterations 30 --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002 --prompt-config ./resources/prompts.json --prompt-group RiskDefinition --input-variables-str "risk_statement=There is a risk that failure to enforce multi-factor authentication can cause unauthorized access to user accounts to occur, leading to account takeover that could lead to financial fraud and identity theft issues for customers."
+det check-chain \
+  --iterations 20 \
+  --embeddings-provider OpenAI \
+  --embeddings-model text-embedding-ada-002 \
+  --prompt-config ./resources/prompts.json \
+  --prompt-group RiskDefinition \
+  --input-variables-str "risk_statement=There is a risk that failure to enforce multi-factor authentication can cause unauthorized access to user accounts to occur, leading to account takeover that could lead to financial fraud and identity theft issues for customers."
 ```
 
 ## Output Interpretation
