@@ -1,6 +1,6 @@
 # det/main.py
 
-
+import re
 import typer
 from rich.console import Console
 from rich.progress import Progress
@@ -9,16 +9,43 @@ from det.det_response.analysis import ResponseAnalysis
 from det.det_response.presentation import ResponsePresenter
 from det.det_response.semantic_distance import SemanticDistanceCalculator
 from det.helpers import get_embedding_generator_adapter, get_llm_client, dynamic_import
-from det.llm.llm_langchain import LangChainClient
+from det.llm.llm_langchain import LangChainClient, ResponseGenerationError
 
 app = typer.Typer()
 
 
 def parse_input_variables(input_vars_str: str) -> dict:
     """
-    Parses a string of comma-separated key=value pairs into a dictionary.
+    Parses a string of key=value pairs into a dictionary.
+    Handles cases where values might contain commas.
     """
-    return dict(pair.split("=") for pair in input_vars_str.split(","))
+    result = {}
+    current_key = None
+    current_value = []
+
+    # Split the string by commas, but only when not inside quotes
+    parts = re.split(r',(?=(?:[^"]*"[^"]*")*[^"]*$)', input_vars_str)
+
+    for part in parts:
+        if "=" in part:
+            if current_key:
+                result[current_key] = "".join(current_value).strip()
+                current_value = []
+            current_key, value = part.split("=", 1)
+            current_key = current_key.strip()
+            current_value.append(value)
+        else:
+            current_value.append("," + part)
+
+    if current_key:
+        result[current_key] = "".join(current_value).strip()
+
+    # Remove any surrounding quotes from values
+    for key, value in result.items():
+        if value.startswith('"') and value.endswith('"'):
+            result[key] = value[1:-1]
+
+    return result
 
 
 @app.command()
@@ -65,7 +92,7 @@ def check_responses(
     console.print(responses[0])
 
     analysis = ResponseAnalysis(responses, semantic_distance_calculator)
-    presenter = ResponsePresenter(analysis)
+    presenter = ResponsePresenter(analysis, None)
     presenter.display_responses_and_differences_table()
 
 
@@ -100,9 +127,14 @@ def check_chain(
     )
 
     with Progress() as progress:
-        for _ in progress.track(range(iterations), description="Processing..."):
-            response = lang_chain_client.generate_response()
-            responses.append(response)
+        for iteration in progress.track(range(iterations), description="Processing..."):
+            try:
+                response = lang_chain_client.generate_response()
+                responses.append(response)
+            except ResponseGenerationError:
+                console.print(
+                    f"[bold red]Warning![/bold red] Failed to get a valid response for iteration [bold yellow]{iteration + 1}[/bold yellow]"
+                )
 
     console.print("The first response:", style="bold underline")
     console.print(responses[0])
@@ -135,9 +167,9 @@ def check_chain(
     # Initialize the presenter object with the analysis object
     presenter = ResponsePresenter(analysis, pydantic_object)
 
-    # Call the new method to display the differences in a table format
-    deep_diff_output = analysis.deep_diff_responses()
-    presenter.display_deep_diff_table(deep_diff_output)
+    # Analyse the responses and then present the similarty scores
+    analysis.deep_diff_responses()
+    presenter.display_semantic_similarity_table()
 
 
 if __name__ == "__main__":

@@ -5,10 +5,17 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
     SystemMessagePromptTemplate,
 )
+from langchain_core.exceptions import OutputParserException
+
 from det.utils.llm_handler import LLMHandler
 from det.utils.prompt_manager import PromptManager
-from det.llm.base import LLMGeneratorInterface
+from det.llm.base import LLMGeneratorInterface, ResponseGenerationError
 from det.helpers import dynamic_import
+
+from rich.console import Console
+from time import sleep
+
+console = Console()
 
 
 class LangChainClient(LLMGeneratorInterface):
@@ -30,11 +37,12 @@ class LangChainClient(LLMGeneratorInterface):
           to be imported from the appropriate modules.
     """
 
-    def __init__(self, prompts_file_path=None):
+    def __init__(self, prompts_file_path=None, max_retries=3):
         self.llm_handler = LLMHandler()
         self.prompt_manager = PromptManager(prompts_file_path=prompts_file_path)
         self.chain = None
         self.input_variables = None
+        self.max_retries = max_retries
 
     def configure_chain(self, prompt_group: str, input_variables: dict, **kwargs):
         """
@@ -144,4 +152,20 @@ class LangChainClient(LLMGeneratorInterface):
             raise ValueError(
                 "The Langchain client has not been configured with a chain or input variables."
             )
-        return self.chain.invoke(self.input_variables)
+        attempts = 0
+        while attempts < self.max_retries:
+            try:
+                # Try generating the response
+                response = self.chain.invoke(self.input_variables)
+                return response  # Return if successful
+            except OutputParserException as e:
+                attempts += 1
+                if attempts < self.max_retries:
+                    console.print(
+                        f"[yellow]Warning: Failed to generate response. Retrying {attempts}/{self.max_retries}...[/yellow]"
+                    )
+                    sleep(1)  # Optional: Introduce a small delay between retries
+                else:
+                    raise ResponseGenerationError(
+                        f"Failed after {self.max_retries} attempts: {str(e)}"
+                    )

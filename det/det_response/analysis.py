@@ -77,7 +77,7 @@ class ResponseAnalysis:
         diffs = []
         for response in self.responses[1:]:  # Skip the base response
             diff = DeepDiff(
-                self.base_response, response, ignore_order=True, verbose_level=2
+                self.base_response, response, ignore_order=True, verbose_level=1
             )
             diffs.append(diff)
         return diffs
@@ -115,3 +115,20 @@ class ResponseAnalysis:
         return self.semantic_distance_calculator.semantic_similarity(
             self.base_response, self.responses
         )
+
+    def calculate_field_similarities(self):
+        if not self.responses:
+            return {}
+
+        similarities = {}
+        base_dict = self.base_response.dict()
+        for field in base_dict.keys():
+            similarities[field] = [1.0]  # First iteration always 1.0
+            base_value = str(getattr(self.base_response, field))
+            for response in self.responses[1:]:
+                compare_value = str(getattr(response, field))
+                score = self.semantic_distance_calculator.semantic_similarity(
+                    base_value, [compare_value]
+                )[0]
+                similarities[field].append(score)
+        return similarities
