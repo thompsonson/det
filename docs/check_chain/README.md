@@ -41,7 +41,7 @@ The command produces several outputs:
 
 1. **Progress Bar**: Shows the progress of iterations.
 
-   ![Progress Bar](docs/img/check_chain/command-to-run-checks.png)
+   ![Progress Bar](/docs/img/check_chain/command-to-run-checks.png)
 
 2. **Structured Output**: The first response is a structured output based on the input risk statement. It includes fields such as:
    - risk_statement
@@ -56,11 +56,11 @@ The command produces several outputs:
    - authorization_recommendation
    - continuous_monitoring_strategy
 
-   ![Structured Output](docs/img/check_chain/first_response_for_gpt4o_20_iterations.png)
+   ![Structured Output](/docs/img/check_chain/first_response_for_gpt4o_20_iterations.png)
 
 3. **Semantic Similarity Scores**: Tables showing semantic similarity scores for each field across iterations.
 
-   ![Semantic Similarity Scores](docs/img/check_chain/results_for_gpt4o_20_iterations.png)
+   ![Semantic Similarity Scores](/docs/img/check_chain/results_for_gpt4o_20_iterations.png)
 
    - Scores range from 0 to 1, where 1 indicates perfect similarity.
    - Higher scores suggest more consistent outputs across iterations.
