@@ -4,6 +4,12 @@
 
 
 
+## v0.3.1 (2024-09-17)
+
+### Fix
+
+* fix: corrected the image locations for the check_chain readme ([`6d47b34`](https://github.com/thompsonson/det/commit/6d47b349dbaa8cc8ce7577179602474b61e49063))
+
 ## v0.3.0 (2024-09-17)
 
 ### Chore
