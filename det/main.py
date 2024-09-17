@@ -60,6 +60,14 @@ def check_responses(
         ..., help="Embeddings model, e.g., 'text-embedding-ada-002'"
     ),
 ):
+    """
+    Check the consistency of responses from a language model.
+
+    This command generates multiple responses using the specified LLM and analyzes
+    their semantic similarity. It's useful for assessing the determinism and
+    consistency of language model outputs.
+    """
+
     responses = []
     console = Console()
 
@@ -114,6 +122,14 @@ def check_chain(
         ..., help="Embeddings model, e.g., 'text-embedding-ada-002'"
     ),
 ):
+    """
+    Run a LangChain-based Structured Output prompt chain and analyze the consistency of responses.
+
+    This command executes a specified prompt chain multiple times, generating
+    structured responses based on the provided configuration. It then analyzes
+    the semantic similarity between these responses to assess consistency.
+    """
+
     responses = []
     console = Console()
 
@@ -161,8 +177,6 @@ def check_chain(
     # Dynamically load the Pydantic model if specified
     if pydantic_model_path:
         pydantic_object = dynamic_import(pydantic_model_path)
-
-    console.print(analysis.deep_diff_responses(), width=120)
 
     # Initialize the presenter object with the analysis object
     presenter = ResponsePresenter(analysis, pydantic_object)
