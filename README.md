@@ -6,10 +6,6 @@ Welcome to a LLM Response Analysis Framework! This tool is designed to dive deep
 
 [Features](#features) | [Screenshots](#screenshots) | [Getting Started](#getting-started) | [Development](#development)
 
-## Current Version
-
-Rev: v0.0.0
-
 ## Features
 
 - **Dynamic LLM Integration**
