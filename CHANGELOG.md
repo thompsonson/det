@@ -4,6 +4,12 @@
 
 
 
+## v0.3.2 (2024-09-17)
+
+### Fix
+
+* fix: removed the incorrect version in the README ([`7230dc8`](https://github.com/thompsonson/det/commit/7230dc8ce0085b0e4cfc47f289f93ec7e53faaad))
+
 ## v0.3.1 (2024-09-17)
 
 ### Fix
