@@ -4,6 +4,32 @@
 
 
 
+## v0.3.0 (2024-09-17)
+
+### Chore
+
+* chore: remove unneeded presentation code and added help documentation to the commands. ([`a511196`](https://github.com/thompsonson/det/commit/a511196ae624dd7f7478b32ba9840ffaa920a9b4))
+
+### Feature
+
+* feat: LangChain Structured Output consistency analysis ([`254d354`](https://github.com/thompsonson/det/commit/254d3540b09be6e9e82c3284a6679ba741400136))
+
+### Fix
+
+* fix: documentation for LangChain Structured Output Chains ([`594c362`](https://github.com/thompsonson/det/commit/594c362e2b8baf25a26bda4a4f6ccb16a643cd97))
+
+* fix: readable layout of example commands ([`1c2e108`](https://github.com/thompsonson/det/commit/1c2e1089ee9f30e1616acb908056b3d8b16451d5))
+
+* fix: readable layout of example commands ([`9483166`](https://github.com/thompsonson/det/commit/9483166ce3986b988af30c39a26966ce58206b2b))
+
+### Unknown
+
+* Merge pull request #20 from thompsonson/LangChain
+
+LangChain Structured Output Chains ([`0457a09`](https://github.com/thompsonson/det/commit/0457a0945aad2be0d2d166d25c1999fd98050e90))
+
+* stash: naughty stash of code developed for H&amp;B but not documented (naughtygit) ([`2931d03`](https://github.com/thompsonson/det/commit/2931d03f57713a09d52813ef0417172531b6e13e))
+
 ## v0.2.1 (2024-03-01)
 
 ### Fix
