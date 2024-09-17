@@ -1,0 +1,88 @@
+test_embedding_output_for_empty_input - Tests how the adapter handles an empty input list.
+test_embedding_output_for_long_text - Tests the adapter's response to a single long text input.
+test_error_handling_on_api_failure - Tests how the adapter handles errors from the underlying API.
+test_cache_creation_on_new_adapter_instance - Verifies that a new cache file is created or an existing one is used when an adapter instance is created.
+test_cache_persistence_across_adapter_instances - Checks if the cache persists data across multiple instances of the adapter.
+test_cache_invalidates_on_generator_failure - Tests the cache's behavior when the embedding generator fails.
+test_adapter_response_to_faulty_embedding_generator - Evaluates how the adapter responds when the embedding generator throws an error.
+test_embedding_cache_updates_after_generator_change - Verifies that the cache updates its responses after changing the underlying embedding generator.
+test_cache_handles_empty_response_from_generator - Tests the cache's behavior when the embedding generator returns an empty response.
+test_cache_file_cleanup_on_test_teardown - Ensures that the cache file is properly cleaned up after tests are run.
+test_logging_for_cache_operations - Verifies that appropriate logging messages are generated for cache load, save, and error conditions.
+test_mock_openai_api_response_variations - Tests adapter behavior with various mocked responses from the OpenAI API to simulate different scenarios.
+
+
+
+@pytest.mark.parametrize("api_response, expected_result", [
+    ([{"text": "sample text", "embedding": [0.1, 0.2, 0.3]}], [[0.1, 0.2, 0.3]]),
+    ([], []),
+    ([{"error": "API limit reached"}], None)  # Assuming your logic handles this case gracefully
+])
+def test_mock_openai_api_response_variations(mock_openai_embedding_generator, api_response, expected_result):
+    mock_openai_embedding_generator.generate_embeddings.return_value = api_response
+    adapter = OpenAIEmbeddingGeneratorAdapter("text-embedding-ada-002", mock_openai_embedding_generator)
+    assert adapter.generate_embeddings(["sample text"]) == expected_result
+
+
+def test_logging_for_cache_operations(caplog, adapter_with_mocked_cache, sample_texts):
+    with caplog.at_level(logging.INFO):
+        adapter_with_mocked_cache.generate_embeddings(sample_texts)
+    assert "Cache loaded successfully" in caplog.text
+    # Add more assertions based on expected log messages
+
+
+
+def test_cache_file_cleanup_on_test_teardown(tmp_path, mock_openai_embedding_generator):
+    cache_file_path = tmp_path / "embeddings_cache.pkl"
+    _ = OpenAIEmbeddingGeneratorAdapter("text-embedding-ada-002", mock_openai_embedding_generator, str(cache_file_path))
+    # No specific assertion here, just demonstrating setup; cleanup would be automatic with tmp_path
+
+
+
+def test_cache_file_cleanup_on_test_teardown(tmp_path, mock_openai_embedding_generator):
+    cache_file_path = tmp_path / "embeddings_cache.pkl"
+    _ = OpenAIEmbeddingGeneratorAdapter("text-embedding-ada-002", mock_openai_embedding_generator, str(cache_file_path))
+    # No specific assertion here, just demonstrating setup; cleanup would be automatic with tmp_path
+
+
+
+def test_cache_handles_empty_response_from_generator(adapter_with_mocked_cache, sample_texts):
+    # Assuming adapter_with_mocked_cache fixture sets up an empty return value for the generator
+    assert adapter_with_mocked_cache.generate_embeddings(sample_texts) == []
+
+
+
+def test_embedding_cache_updates_after_generator_change(adapter_with_mocked_cache, sample_texts, mocked_embedding_generator):
+    # First, get results from initial setup
+    initial_results = adapter_with_mocked_cache.generate_embeddings(sample_texts)
+    # Change generator response
+    new_expected_embeddings = [[0.3, 0.2, 0.1]]
+    mocked_embedding_generator.generate_embeddings.return_value = new_expected_embeddings
+    # Test for updated results
+    updated_results = adapter_with_mocked_cache.generate_embeddings(sample_texts)
+    assert initial_results != updated_results
+    assert updated_results == new_expected_embeddings
+
+
+def test_adapter_response_to_faulty_embedding_generator(adapter_with_mocked_cache, sample_texts, mocked_embedding_generator):
+    mocked_embedding_generator.generate_embeddings.side_effect = Exception("Simulated generator failure")
+    with pytest.raises(Exception, match="Simulated generator failure"):
+        adapter_with_mocked_cache.generate_embeddings(sample_texts)
+
+
+def test_cache_invalidates_on_generator_failure(adapter_with_mocked_cache, sample_texts, mocked_embedding_generator):
+    mocked_embedding_generator.generate_embeddings.side_effect = Exception("Simulated generator failure")
+    try:
+        adapter_with_mocked_cache.generate_embeddings(sample_texts)
+    except Exception:
+        pass
+    # Assuming your cache has a method to check if it's invalidated or empty
+    assert adapter_with_mocked_cache.cache_is_empty()
+
+
+def test_cache_persistence_across_adapter_instances(tmp_path, sample_texts, expected_embeddings):
+    cache_file_path = tmp_path / "embeddings_cache.pkl"
+    adapter1 = OpenAIEmbeddingGeneratorAdapter("text-embedding-ada-002", cache_file_path=str(cache_file_path))
+    adapter1.generate_embeddings(sample_texts)
+    adapter2 = OpenAIEmbeddingGeneratorAdapter("text-embedding-ada-002", cache_file_path=str(cache_file_path))
+    assert adapter2.generate_embeddings(sample_texts) == expected_embeddings

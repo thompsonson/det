@@ -15,6 +15,9 @@ Rev: v0.0.0
 - **Dynamic LLM Integration**
 Seamlessly connect with various LLM providers and models to fetch responses using a flexible architecture.
 
+- **LangChain Structured Output Chain Analysis**
+Seamlessly connect with a LangChain Structured Output and check for the consistency of responses. [See this documentation for further information.](docs/check_chain/README.md)
+
 - **Semantic Similarity Calculation**
 Understand the nuanced differences between responses by calculating their semantic distances.
 
@@ -35,6 +38,12 @@ Below are some screenshots showcasing the framework in action:
 ### GPT-4 Example
 
 ![GPT-4 Analysis](https://raw.githubusercontent.com/thompsonson/det/main/docs/img/GPT4.png)
+
+
+### LangChain Structure Output example (using gpt-4o)
+
+![LangChain Structure Output example](https://raw.githubusercontent.com/thompsonson/det/main/docs/img/check_chain/results_for_gpt4o_20_iterations.png)
+
 
 These visuals provide a glimpse into how the framework processes and presents data from different LLM versions, highlighting the flexibility and depth of analysis possible with this tool.
 
@@ -62,11 +71,58 @@ To get a list of all the arguments and their descriptions, use:
 
 `det --help`
 
-a basic analysis of OpenAI's gpt3.5-turbo model
+a basic analysis of OpenAI's gpt-4o-mini model
 
-`det --iterations 2 --llm-provider OpenAI --llm-model gpt-3.5-turbo --embeddings-provider OpenAI --embeddings-model text-embedding-ada-002`
+```bash
+det check-responses \
+  --iterations 2 \
+  --llm-provider OpenAI \
+  --llm-model gpt-4o-mini \
+  --embeddings-provider OpenAI \
+  --embeddings-model text-embedding-ada-002
+```
+
+### LangChain Structured Output Chains
+
+a LangChain Structured Output example
+
+note, this requires the prompt details [/resources/prompt.json](/resources/prompts.json) and a pydantic output class [/resources/risk_definition.py](/resources/risk_definition.py)
+
+```bash
+det check-chain \
+  --iterations 20 \
+  --embeddings-provider OpenAI \
+  --embeddings-model text-embedding-ada-002 \
+  --prompt-config ./resources/prompts.json \
+  --prompt-group RiskDefinition \
+  --input-variables-str "risk_statement=There is a risk that failure to enforce multi-factor authentication can cause unauthorized access to user accounts to occur, leading to account takeover that could lead to financial fraud and identity theft issues for customers."
+```
 
 ## Development
+
+### Prerequisites
+- [Python 3](https://www.python.org/downloads/)
+- [Poetry](https://python-poetry.org/docs/#installation)
+
+### Setup Instructions
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/thompsonson/det.git
+   cd det
+   ```
+
+2. Set up the Poetry environment:
+   ```
+   poetry install
+   ```
+
+3. Activate the Poetry shell:
+   ```
+   poetry shell
+   ```
+
+You're now ready to start development on the `det` project!
 
 ### Documentation
 

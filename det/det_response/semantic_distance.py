@@ -60,8 +60,13 @@ class SemanticDistanceCalculator:
         return similarity
 
     def semantic_similarity(self, base_text, compare_texts):
+        if isinstance(base_text, str):
+            base_text = [base_text]
+        if isinstance(compare_texts, str):
+            compare_texts = [compare_texts]
+
         embeddings = self.embedding_generator.generate_embeddings(
-            [base_text] + compare_texts
+            base_text + compare_texts
         )
         base_embedding = embeddings[0]
         similarities = [

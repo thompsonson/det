@@ -35,3 +35,7 @@ class LLMGeneratorInterface(ABC):
         :return: The generated text response.
         """
         pass
+
+
+class ResponseGenerationError(Exception):
+    pass

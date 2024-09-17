@@ -50,7 +50,6 @@ for anyone looking to present textual analysis results in a professional and eng
 
 """
 
-
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
@@ -59,9 +58,10 @@ from det.det_response.analysis import ResponseAnalysis
 
 
 class ResponsePresenter:
-    def __init__(self, analysis: ResponseAnalysis):
+    def __init__(self, analysis: ResponseAnalysis, model_class):
         self.analysis = analysis
         self.console = Console()
+        self.model_class = model_class
 
     def display_responses_and_differences_table(self):
         table = Table(title="Response Counts, Differences, and Semantic Similarity")
@@ -77,7 +77,7 @@ class ResponsePresenter:
         response_counts = self.analysis.response_counts
 
         # Retrieve semantic similarities
-        semantic_similarities = self.analysis.semantic_similarities
+        semantic_similarities = self.analysis.calculate_semantic_similarities()
 
         for i, (response, count) in enumerate(response_counts.items()):
             current_words = response.split()
@@ -141,3 +141,29 @@ class ResponsePresenter:
                 f"Response #{i} compared to Response #0:", style="bold underline"
             )
             self.console.print(diff_text)
+
+    def display_semantic_similarity_table(self):
+        similarities = self.analysis.calculate_field_similarities()
+        table = Table(title="Semantic Similarity Scores")
+        table.add_column("Field", style="cyan")
+        for i in range(len(self.analysis.responses)):
+            table.add_column(f"i {i+1}", justify="center")
+
+        for field, scores in similarities.items():
+            row = [field]
+            for score in scores:
+                # format the score
+                if f"{score:.2f}" <= "0.90":
+                    formatted_score = f"[bold red]{score:.2f}[/bold red]"
+                elif f"{score:.2f}" <= "0.95":
+                    formatted_score = f"[red]{score:.2f}[/red]"
+                elif f"{score:.2f}" <= "0.98":
+                    formatted_score = f"[magenta]{score:.2f}[/magenta]"
+                else:
+                    formatted_score = f"[green]{score:.2f}[/green]"
+
+                row.append(formatted_score)
+
+            table.add_row(*row)
+
+        self.console.print(table)
