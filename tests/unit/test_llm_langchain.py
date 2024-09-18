@@ -2,7 +2,8 @@ import json
 import pytest
 from unittest.mock import patch
 from det.utils.prompt_manager import PromptManager
-from det.llm.llm_langchain import LangChainClient
+from unittest.mock import MagicMock
+from det.llm.llm_langchain import LangChainClient, ResponseGenerationError
 
 def test_langchain_client_initialization(resources_dir):
     """Test the initialization of LangChainClient with default parameters."""
@@ -54,7 +55,37 @@ def test_configure_chain_missing_system_prompt(resources_dir):
         with pytest.raises(ValueError, match="System prompt for 'RiskDefinition' not found."):
             client.configure_chain(prompt_group="RiskDefinition", input_variables={})
 
-def test_configure_chain_missing_user_prompt(resources_dir):
+def test_generate_response_success(resources_dir):
+    """Test successful response generation."""
+    prompts_file_path = resources_dir / "prompts.json"
+    client = LangChainClient(prompts_file_path=prompts_file_path)
+    client.configure_chain(prompt_group="RiskDefinition", input_variables={"risk_statement": "Sample risk statement"})
+
+    # Mock the chain's invoke method to return a sample response
+    client.chain.invoke = MagicMock(return_value="Sample response")
+
+    response = client.generate_response()
+    assert response == "Sample response", "The response should match the mocked return value."
+
+
+def test_generate_response_unconfigured_chain():
+    """Test that generating a response without configuring the chain raises ValueError."""
+    client = LangChainClient()
+    with pytest.raises(ValueError, match="The Langchain client has not been configured with a chain or input variables."):
+        client.generate_response()
+
+
+def test_generate_response_retry_mechanism(resources_dir):
+    """Test the retry mechanism in response generation."""
+    prompts_file_path = resources_dir / "prompts.json"
+    client = LangChainClient(prompts_file_path=prompts_file_path)
+    client.configure_chain(prompt_group="RiskDefinition", input_variables={"risk_statement": "Sample risk statement"})
+
+    # Mock the chain's invoke method to raise an exception
+    client.chain.invoke = MagicMock(side_effect=OutputParserException("Parsing error"))
+
+    with pytest.raises(ResponseGenerationError, match="Failed after 3 attempts: Parsing error"):
+        client.generate_response()
     """Test that configuring the chain raises ValueError if user prompt is missing."""
     prompts_file_path = resources_dir / "prompts.json"
     client = LangChainClient(prompts_file_path=prompts_file_path)
