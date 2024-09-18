@@ -69,6 +69,8 @@ jobs:
         run: make cicd_setup
 
       - name: Install dependencies
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: make install
 
       - name: Semantic Release
