@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 import logging
+import os
 
 from det.embeddings.cache import EmbeddingsCache
 from det.embeddings.generator import (
