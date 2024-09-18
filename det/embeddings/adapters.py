@@ -49,6 +49,10 @@ class OpenAIEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
             model=model, api_key=api_key
         )
 
+        # Ensure the cache file is created if it doesn't exist
+        if cache_file_path and not os.path.exists(cache_file_path):
+            open(cache_file_path, 'wb').close()
+
         self.embeddings_cache = EmbeddingsCache(
             embeddings_generator=self.embedding_generator,
             cache_file_path=cache_file_path,
