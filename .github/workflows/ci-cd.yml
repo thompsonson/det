@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
     steps:
     - uses: actions/checkout@v2
 
@@ -31,6 +31,13 @@ jobs:
     - name: Install dependencies
       run: make install
 
+    - name: Environment Info
+      run: |
+        python --version
+        pip --version
+        poetry --version
+        env
+
     - name: Cache Poetry virtualenv
       uses: actions/cache@v2
       with:
@@ -44,6 +51,8 @@ jobs:
       run: make check_style
 
     - name: Run the tests
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: make test
 
   release:
