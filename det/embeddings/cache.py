@@ -68,7 +68,9 @@ class EmbeddingsCache:
             except EOFError:
                 logger.warning(f"Cache file exists but is empty: {self.cache_file_path}")
         else:
-            logger.info(f"Cache file does not exist: {self.cache_file_path}, initializing empty cache")
+            logger.info(f"Cache file does not exist: {self.cache_file_path}, creating empty cache file")
+            with open(self.cache_file_path, "wb") as cache_file:
+                pickle.dump({}, cache_file)  # Initialize with an empty dictionary
             return {}
 
     def generate_embeddings(self, texts):
