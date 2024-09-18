@@ -59,20 +59,16 @@ class EmbeddingsCache:
     def _load_cache(self):
         """Load the cache from a file if it exists, otherwise return an empty dictionary."""
         logger.debug(f"Attempting to load cache from: {self.cache_file_path}")
-        if not os.path.exists(self.cache_file_path):
-            logger.info(f"Cache file does not exist: {self.cache_file_path}, creating")
-            open(self.cache_file_path, 'a').close()
-        try:
-            with open(self.cache_file_path, "rb") as cache_file:
-                cache = pickle.load(cache_file)
-                logger.info(
-                    f"Cache loaded successfully from: {self.cache_file_path}"
-                )
-                return cache
-        except EOFError:
-            logger.warning(
-                f"Cache file exists but is empty: {self.cache_file_path}"
-            )
+        if os.path.exists(self.cache_file_path):
+            try:
+                with open(self.cache_file_path, "rb") as cache_file:
+                    cache = pickle.load(cache_file)
+                    logger.info(f"Cache loaded successfully from: {self.cache_file_path}")
+                    return cache
+            except EOFError:
+                logger.warning(f"Cache file exists but is empty: {self.cache_file_path}")
+        else:
+            logger.info(f"Cache file does not exist: {self.cache_file_path}, initializing empty cache")
             return {}
 
     def generate_embeddings(self, texts):
