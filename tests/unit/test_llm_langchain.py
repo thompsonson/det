@@ -1,6 +1,7 @@
 import json
 import pytest
 from unittest.mock import patch
+from langchain.prompts.chat import ChatPromptTemplate
 from det.utils.prompt_manager import PromptManager
 from det.llm.llm_langchain import LangChainClient
 
