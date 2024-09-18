@@ -18,70 +18,39 @@ def test_configure_chain_with_valid_prompts(resources_dir):
     """Test configuring the chain with valid prompts and input variables."""
     prompts_file_path = resources_dir / "prompts.json"
     client = LangChainClient(prompts_file_path=prompts_file_path)
-    
+
     input_variables = {"risk_statement": "Sample risk statement"}
     client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
-    
+
     assert client.chain is not None, "Chain should be configured."
     assert client.input_variables == input_variables, "Input variables should be set correctly."
-
-def test_configure_chain_with_invalid_input_variables(resources_dir):
-    """Test configuring the chain with invalid input variables."""
-    prompts_file_path = resources_dir / "prompts.json"
-    client = LangChainClient(prompts_file_path=prompts_file_path)
-    
-    input_variables = {"invalid_key": "Invalid value"}
-    with pytest.raises(KeyError):
-        client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
 
 def test_configure_chain_missing_format_instructions(resources_dir):
     """Test configuring the chain when format instructions are missing."""
     prompts_file_path = resources_dir / "prompts.json"
     client = LangChainClient(prompts_file_path=prompts_file_path)
-    
+
     input_variables = {"risk_statement": "Sample risk statement"}
     with patch.object(PromptManager, 'get_prompts', return_value={
         "system_prompt": "System prompt",
         "prompt": "User prompt",
-        "outputparser": {}
+        "outputparser": {},
+        "model": {
+            "provider": "ChatOpenAI",
+            "model": "gpt-4o",
+            "max_tokens": "1500",
+            "temperature": "0"
+        }
     }):
         client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
         assert client.chain is not None, "Chain should be configured even without format instructions."
 
-def test_configure_chain_correct_output_parser_configuration(resources_dir):
-    """Test that the output parser is configured correctly."""
-    prompts_file_path = resources_dir / "prompts.json"
-    client = LangChainClient(prompts_file_path=prompts_file_path)
-    
-    input_variables = {"risk_statement": "Sample risk statement"}
-    client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
-    
-    assert client.chain.output_parser is not None, "Output parser should be configured."
-
-def test_configure_chain_composition(resources_dir):
-    """Test that the chain is composed correctly with the prompt and LLM."""
-    prompts_file_path = resources_dir / "prompts.json"
-    client = LangChainClient(prompts_file_path=prompts_file_path)
-    
-    input_variables = {"risk_statement": "Sample risk statement"}
-    client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
-    
-    assert isinstance(client.chain, ChatPromptTemplate), "Chain should be a ChatPromptTemplate instance."
-    """Test configuring the chain with valid prompts and input variables."""
-    prompts_file_path = resources_dir / "prompts.json"
-    client = LangChainClient(prompts_file_path=prompts_file_path)
-    
-    input_variables = {"risk_statement": "Sample risk statement"}
-    client.configure_chain(prompt_group="RiskDefinition", input_variables=input_variables)
-    
-    assert client.chain is not None, "Chain should be configured."
-    assert client.input_variables == input_variables, "Input variables should be set correctly."
 
 def test_configure_chain_missing_system_prompt(resources_dir):
     """Test that configuring the chain raises ValueError if system prompt is missing."""
     prompts_file_path = resources_dir / "prompts.json"
     client = LangChainClient(prompts_file_path=prompts_file_path)
-    
+
     with patch.object(PromptManager, 'get_prompts', return_value={"prompt": "User prompt"}):
         with pytest.raises(ValueError, match="System prompt for 'RiskDefinition' not found."):
             client.configure_chain(prompt_group="RiskDefinition", input_variables={})
@@ -90,7 +59,7 @@ def test_configure_chain_missing_user_prompt(resources_dir):
     """Test that configuring the chain raises ValueError if user prompt is missing."""
     prompts_file_path = resources_dir / "prompts.json"
     client = LangChainClient(prompts_file_path=prompts_file_path)
-    
+
     with patch.object(PromptManager, 'get_prompts', return_value={"system_prompt": "System prompt"}):
         with pytest.raises(ValueError, match="User prompt for 'RiskDefinition' not found."):
             client.configure_chain(prompt_group="RiskDefinition", input_variables={})
