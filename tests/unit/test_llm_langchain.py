@@ -1,6 +1,7 @@
 import json
 import pytest
 from unittest.mock import patch
+from det.utils.prompt_manager import PromptManager
 from det.llm.llm_langchain import LangChainClient
 
 def test_langchain_client_initialization(resources_dir):
