@@ -80,7 +80,11 @@ class OpenAIEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
         Returns:
             List[List[float]]: The generated embeddings.
         """
-        return self.embeddings_cache.generate_embeddings(texts)
+        try:
+            return self.embeddings_cache.generate_embeddings(texts)
+        except Exception as e:
+            logger.error(f"Error generating embeddings: {str(e)}")
+            raise Exception(f"API failure: {str(e)}")
 
 
 class AnotherEmbeddingGeneratorAdapter(EmbeddingGeneratorAdapterInterface):
