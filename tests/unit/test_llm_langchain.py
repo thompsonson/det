@@ -3,6 +3,7 @@ import pytest
 from unittest.mock import patch
 from det.utils.prompt_manager import PromptManager
 from unittest.mock import MagicMock
+from langchain_core.exceptions import OutputParserException
 from det.llm.llm_langchain import LangChainClient, ResponseGenerationError
 
 def test_langchain_client_initialization(resources_dir):
