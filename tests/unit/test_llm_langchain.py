@@ -63,7 +63,8 @@ def test_generate_response_success(resources_dir):
     client.configure_chain(prompt_group="RiskDefinition", input_variables={"risk_statement": "Sample risk statement"})
 
     # Mock the chain's invoke method to return a sample response
-    client.chain.invoke = MagicMock(return_value="Sample response")
+    client.chain = MagicMock()
+    client.chain.invoke.return_value = "Sample response"
 
     response = client.generate_response()
     assert response == "Sample response", "The response should match the mocked return value."
@@ -83,7 +84,8 @@ def test_generate_response_retry_mechanism(resources_dir):
     client.configure_chain(prompt_group="RiskDefinition", input_variables={"risk_statement": "Sample risk statement"})
 
     # Mock the chain's invoke method to raise an exception
-    client.chain.invoke = MagicMock(side_effect=OutputParserException("Parsing error"))
+    client.chain = MagicMock()
+    client.chain.invoke.side_effect = OutputParserException("Parsing error")
 
     with pytest.raises(ResponseGenerationError, match="Failed after 3 attempts: Parsing error"):
         client.generate_response()
