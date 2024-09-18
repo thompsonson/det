@@ -173,4 +173,4 @@ from pathlib import Path
 @pytest.fixture
 def resources_dir():
     """Fixture to provide the path to the resources directory."""
-    return Path(__file__).parent.parent / "resources"
+    return Path(__file__).parent.parent.parent / "resources"
