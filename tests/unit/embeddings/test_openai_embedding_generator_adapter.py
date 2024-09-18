@@ -94,3 +94,13 @@ def test_error_handling_on_api_failure(mock_openai_embedding_generator, sample_t
     )
     with pytest.raises(Exception, match="API failure"):
         adapter.generate_embeddings(sample_texts)
+def test_cache_creation_on_new_adapter_instance(tmp_path, mock_openai_embedding_generator):
+    """Verify that a new cache file is created or an existing one is used when an adapter instance is created."""
+    cache_file_path = tmp_path / "embeddings_cache.pkl"
+    adapter = OpenAIEmbeddingGeneratorAdapter(
+        model="text-embedding-ada-002",
+        embedding_generator=mock_openai_embedding_generator,
+        cache_file_path=str(cache_file_path),
+    )
+    # Check if the cache file is created
+    assert cache_file_path.exists(), "Cache file should be created on adapter initialization."
