@@ -6,6 +6,7 @@ import tempfile
 from unittest.mock import create_autospec, patch
 
 import pytest
+from pathlib import Path
 
 from det.embeddings.adapters import OpenAIEmbeddingGeneratorAdapter
 from det.embeddings.cache import EmbeddingsCache
@@ -167,8 +168,7 @@ def adapter_with_faulty_cache(mock_openai_api_error):
 def expected_long_text_embedding():
     # Example: Generate a placeholder embedding of the correct length
     return [0.0] * 1568  # or any other method of generating a list of this length
-import pytest
-from pathlib import Path
+
 
 @pytest.fixture
 def resources_dir():
