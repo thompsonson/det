@@ -4,6 +4,80 @@
 
 
 
+## v0.4.0 (2024-09-18)
+
+### Chore
+
+* chore: additional tests for the embeddings and langchain
+
+additional tests for the embeddings and langchain ([`2bd89df`](https://github.com/thompsonson/det/commit/2bd89dfcf4895fc4445bdb1bd072b941b26ffb10))
+
+* chore: remove unused import from test_llm_langchain.py ([`e478ea9`](https://github.com/thompsonson/det/commit/e478ea9d3b8fdaaf2128a7624c7278d035e72aa0))
+
+### Ci
+
+* ci: debuging the environment ([`a58ecd6`](https://github.com/thompsonson/det/commit/a58ecd692eb09ae421f3f4430e59e3acb7280497))
+
+* ci: debuging the environment ([`296178b`](https://github.com/thompsonson/det/commit/296178b7b2e1c6561f21a91cf8833bae6e94a090))
+
+* ci: debuging the environment ([`df36a4a`](https://github.com/thompsonson/det/commit/df36a4a487c1fa4303250e3fbb1ded694039b48e))
+
+* ci: debuging the environment ([`d5d33ae`](https://github.com/thompsonson/det/commit/d5d33ae4cf5373461d2e84cbcdc3623b164730cc))
+
+* ci: debuging the environment ([`16fe833`](https://github.com/thompsonson/det/commit/16fe833a21a4185d40927ccaf84c71f170b73155))
+
+### Feature
+
+* feat: create cache file if it does not exist and initialize with an empty dictionary ([`41afb37`](https://github.com/thompsonson/det/commit/41afb3734f03debe70ce9cc54c03a14d7367fd18))
+
+### Fix
+
+* fix: configured the pipeline to use dummy keys ([`0ab78a5`](https://github.com/thompsonson/det/commit/0ab78a5d581cbab62a1567141b4d17a7f53ee4c9))
+
+* fix: configured the pipeline to use dummy keys ([`d89b3a4`](https://github.com/thompsonson/det/commit/d89b3a44fa362013ad2ca447a0e96558425d7401))
+
+* fix: formatting ([`9d33d0a`](https://github.com/thompsonson/det/commit/9d33d0a123a69e1a20df7b4629d70859e1cd440e))
+
+* fix: create cache file if it doesn&#39;t exist in OpenAIEmbeddingGeneratorAdapter initialization ([`f473410`](https://github.com/thompsonson/det/commit/f47341079696746adb2cb1a91705bf102a67ef18))
+
+* fix: create cache file if it doesn&#39;t exist on adapter initialization ([`6bdddfd`](https://github.com/thompsonson/det/commit/6bdddfd6d67e38364f7c8c248cbcd0a406a9c8ab))
+
+* fix: handle empty or unpicklable cache file in EmbeddingsCache to prevent TypeError ([`fb81fc8`](https://github.com/thompsonson/det/commit/fb81fc8c7d1d009a34042d9e86b74638a6f301bd))
+
+* fix: update resources_dir fixture to point to the correct resources directory ([`f6b7a8d`](https://github.com/thompsonson/det/commit/f6b7a8d715b6ff0dc490b8f7c7a9bf0d2a24d189))
+
+* fix: Improve cache loading logic to avoid unnecessary file creation and ensure valid initialization of the cache. ([`a8dd5b0`](https://github.com/thompsonson/det/commit/a8dd5b0c20506ff21ae7a49ea1bab7190e203152))
+
+### Test
+
+* test: Fix mocking of chain&#39;s invoke method in llm_langchain tests to resolve ValueError ([`fd740dd`](https://github.com/thompsonson/det/commit/fd740dd6885aed0a8603d7f918df99713005d796))
+
+* test: Add unit tests for LangChainClient response generation and fix undefined OutputParserException import ([`8be8d73`](https://github.com/thompsonson/det/commit/8be8d73f0e6ae88d3b59caa22cd6038bd021a645))
+
+* test: Add response generation tests for LangChainClient including success, unconfigured chain, and retry mechanism scenarios ([`f088e2c`](https://github.com/thompsonson/det/commit/f088e2c359d8d5706daad7661493213aaca87345))
+
+* test: Add tests for configure_chain method and fix undefined ChatPromptTemplate import ([`bcbe771`](https://github.com/thompsonson/det/commit/bcbe771c0a81a65e75ec1608d6ce5bef76ddb47d))
+
+* test: Add unit tests for chain configuration handling in LangChainClient ([`f838dd1`](https://github.com/thompsonson/det/commit/f838dd1eab358e09a5ca2ecdd4edb0c5679b3b3a))
+
+* test: Add unit tests for LangChainClient&#39;s configure_chain method and fix undefined PromptManager import ([`15c0897`](https://github.com/thompsonson/det/commit/15c0897b9f7585ca69b7b027e2d110d301d84ce1))
+
+* test: add unit tests for chain configuration in LangChainClient ([`a960138`](https://github.com/thompsonson/det/commit/a9601381436b9752d66f70c3eec50f4f62092b31))
+
+* test: Fix LangChainClient initialization test by providing correct prompts file path and adding resources directory fixture ([`1d44696`](https://github.com/thompsonson/det/commit/1d446969af6f44b4ef96bc6fccabecbce342878e))
+
+* test: add initialization test for LangChainClient class ([`34babda`](https://github.com/thompsonson/det/commit/34babdac12db7f119099ac065cff8056e058c4a1))
+
+* test: add test for handling an existing but empty cache file in OpenAIEmbeddingGeneratorAdapter ([`7d7f18c`](https://github.com/thompsonson/det/commit/7d7f18c206d6b38cd8afb3561c9715b3b5646f6b))
+
+* test: add test for cache creation on new adapter instance ([`450d7b3`](https://github.com/thompsonson/det/commit/450d7b3353d7ae92c58e2a7c6239ac8a4ea98eda))
+
+### Unknown
+
+* &#34;fix: manual update to aider generated tests - removed deep LangChain chain tests&#34; ([`28ee07b`](https://github.com/thompsonson/det/commit/28ee07bd017c62ab2c1795fad769b4f6efa16459))
+
+* &#34;fix: test_cache_creation_on_new_adapter_instance&#34; ([`32f944a`](https://github.com/thompsonson/det/commit/32f944a7a7bcb2ccc2befc58482c4e8b79ce77b6))
+
 ## v0.3.2 (2024-09-17)
 
 ### Fix
