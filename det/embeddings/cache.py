@@ -65,9 +65,9 @@ class EmbeddingsCache:
                     cache = pickle.load(cache_file)
                     logger.info(f"Cache loaded successfully from: {self.cache_file_path}")
                     return cache
-            except EOFError:
+            except (EOFError, pickle.UnpicklingError):
                 logger.warning(f"Cache file exists but is empty: {self.cache_file_path}")
-        else:
+                return {}
             logger.info(f"Cache file does not exist: {self.cache_file_path}, creating empty cache file")
             with open(self.cache_file_path, "wb") as cache_file:
                 pickle.dump({}, cache_file)  # Initialize with an empty dictionary
