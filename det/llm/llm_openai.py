@@ -48,14 +48,14 @@ class OpenAIClient(LLMGeneratorInterface):
     def load_tools_and_messages(self, tools_file_path: str):
         """
         Load tools and messages from a JSON configuration file.
-        
+
         :param tools_file_path: Path to the JSON file containing tools and messages.
         :return: A tuple of (tools, messages).
         """
         if not os.path.exists(tools_file_path):
             raise FileNotFoundError(f"Tools file not found: {tools_file_path}")
 
-        with open(tools_file_path, 'r') as file:
+        with open(tools_file_path, "r") as file:
             config = json.load(file)
             tools = config.get("tools", [])
             messages = config.get("messages", [])

@@ -10,6 +10,7 @@ from det.det_response.presentation import ResponsePresenter
 from det.det_response.semantic_distance import SemanticDistanceCalculator
 from det.helpers import get_embedding_generator_adapter, get_llm_client, dynamic_import
 from det.llm.llm_langchain import LangChainClient, ResponseGenerationError
+from det.llm.llm_openai_function import OpenAIFunctionClient
 
 app = typer.Typer()
 
@@ -46,6 +47,99 @@ def parse_input_variables(input_vars_str: str) -> dict:
             result[key] = value[1:-1]
 
     return result
+
+
+@app.command()
+def check_functions(
+    iterations: int = typer.Option(10, help="Number of iterations to check responses"),
+    llm_model: str = typer.Option(..., help="LLM model, e.g., 'gpt-3.5-turbo'"),
+    embeddings_provider: str = typer.Option(
+        ..., help="Embeddings provider, e.g., 'OpenAI'"
+    ),
+    embeddings_model: str = typer.Option(
+        ..., help="Embeddings model, e.g., 'text-embedding-ada-002'"
+    ),
+):
+    client = OpenAIFunctionClient(model=llm_model)
+
+    responses = []
+    console = Console()
+
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_delivery_date",
+                "description": "Get the delivery date for a customer's order. Call this whenever you need to know the delivery date, for example when a customer asks 'Where is my package'",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "order_id": {
+                            "type": "string",
+                            "description": "The customer's order ID.",
+                        },
+                    },
+                    "required": ["order_id"],
+                    "additionalProperties": False,
+                },
+            },
+        }
+    ]
+
+    messages = []
+    messages.append(
+        {
+            "role": "system",
+            "content": "You are a helpful customer support assistant. Use the supplied tools to assist the user.",
+        }
+    )
+    messages.append(
+        {
+            "role": "user",
+            "content": "Hi, can you tell me the delivery date for my order?",
+        }
+    )
+    messages.append(
+        {
+            "role": "assistant",
+            "content": "Hi there! I can help with that. Can you please provide your order ID?",
+        }
+    )
+    messages.append({"role": "user", "content": "i think it is order_12345"})
+
+    with Progress() as progress:
+        for _ in progress.track(range(iterations), description="Processing..."):
+            response = client.generate_response_with_function_call(
+                messages=messages,
+                tools=tools,
+                temperature=0,
+                max_tokens=256,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+            )
+            responses.append(response)
+
+    console.print("The first response:", style="bold underline")
+    console.print(responses[0])
+
+    # Dynamic selection of the embedding generator based on the provider
+    embedding_generator_adapter = get_embedding_generator_adapter(
+        embeddings_provider, embeddings_model
+    )
+
+    # Initialize the SemanticDistanceCalculator with the adapter
+    semantic_distance_calculator = SemanticDistanceCalculator(
+        embedding_generator=embedding_generator_adapter
+    )
+
+    analysis = ResponseAnalysis(responses, semantic_distance_calculator)
+    # Initialize the presenter object with the analysis object
+    presenter = ResponsePresenter(analysis)
+
+    # Analyse the responses and then present the similarty scores
+    analysis.deep_diff_responses()
+    presenter.display_semantic_similarity_table()
 
 
 @app.command()

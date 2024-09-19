@@ -37,8 +37,10 @@
                             }
                         }
                     },
-                    "required": ["order_id"],
-                    "additionalProperties": False
+                    "required": [
+                        "order_id"
+                    ],
+                    "additionalProperties": "False"
                 }
             }
         ]

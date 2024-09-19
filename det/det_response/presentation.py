@@ -58,10 +58,9 @@ from det.det_response.analysis import ResponseAnalysis
 
 
 class ResponsePresenter:
-    def __init__(self, analysis: ResponseAnalysis, model_class):
+    def __init__(self, analysis: ResponseAnalysis):
         self.analysis = analysis
         self.console = Console()
-        self.model_class = model_class
 
     def display_responses_and_differences_table(self):
         table = Table(title="Response Counts, Differences, and Semantic Similarity")
