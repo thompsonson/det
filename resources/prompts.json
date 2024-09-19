@@ -12,5 +12,35 @@
             "type": "langchain.output_parsers.PydanticOutputParser",
             "value": "resources.risk_definition.RiskDefinition"
         }
+    },
+    "OrderManager": {
+        "system_prompt": "You are an Order Management Assistant. Your task is to assist with order inquiries and provide delivery dates.",
+        "user_prompt": "Hi, can you tell me the delivery date for my order?",
+        "model": {
+            "provider": "ChatOpenAI",
+            "model": "gpt-3.5-turbo",
+            "max_tokens": "1500",
+            "temperature": "0.7"
+        },
+        "tools": [
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_delivery_date",
+                    "description": "Get the delivery date for a customer's order. Call this whenever you need to know the delivery date, for example when a customer asks 'Where is my package'",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "order_id": {
+                                "type": "string",
+                                "description": "The customer's order ID."
+                            }
+                        },
+                        "required": ["order_id"],
+                        "additionalProperties": False
+                    }
+                }
+            }
+        ]
     }
 }
