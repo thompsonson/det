@@ -28,18 +28,19 @@ class RiskDefinition(BaseModel):
     assessment_approach: str = Field(
         ..., description="Methods to evaluate control effectiveness."
     )
-    risk_likelihood: Literal[
-        "Very Low", "Low", "Moderate", "High", "Very High"
-    ] = Field(
-        ..., description="Qualitative rating of the likelihood of the risk occurring."
+    risk_likelihood: Literal["Very Low", "Low", "Moderate", "High", "Very High"] = (
+        Field(
+            ...,
+            description="Qualitative rating of the likelihood of the risk occurring.",
+        )
     )
     risk_impact: Literal["Very Low", "Low", "Moderate", "High", "Very High"] = Field(
         ...,
         description="Qualitative rating of the impact of the risk, should it occur.",
     )
-    authorization_recommendation: Literal[
-        "Accept", "Mitigate", "Transfer", "Avoid"
-    ] = Field(..., description="Recommendation for risk treatment strategy.")
+    authorization_recommendation: Literal["Accept", "Mitigate", "Transfer", "Avoid"] = (
+        Field(..., description="Recommendation for risk treatment strategy.")
+    )
     continuous_monitoring_strategy: str = Field(
         ..., description="Proposed ongoing risk management activities."
     )

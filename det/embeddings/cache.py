@@ -29,7 +29,6 @@ caching of embeddings to disk, loading them as needed to avoid redundant computa
 requests.
 """
 
-
 import atexit
 import logging
 import os
@@ -39,6 +38,7 @@ import pickle
 from det.embeddings.generator import EmbeddingGeneratorInterface
 
 logger = logging.getLogger(__name__)
+
 
 class EmbeddingsCache:
     def __init__(

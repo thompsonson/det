@@ -20,7 +20,6 @@ This setup facilitates seamless integration with different Large Language Models
 BaseLLMClient interface, promoting a plug-and-play architecture for text generation tasks.
 """
 
-
 from openai import OpenAI
 
 from det.llm.base import LLMGeneratorInterface
