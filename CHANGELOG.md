@@ -4,6 +4,24 @@
 
 
 
+## v0.4.1 (2024-09-25)
+
+### Fix
+
+* fix: caching logic (#22)
+
+* fixing caching logic
+
+* removing print statements
+
+* running ruff format
+
+* formatting as it was previously
+
+---------
+
+Co-authored-by: someshfengde &lt;somesh@culinda.com&gt; ([`b904200`](https://github.com/thompsonson/det/commit/b904200f36f2b4c4eed5a56069451d8094289161))
+
 ## v0.4.0 (2024-09-18)
 
 ### Chore
