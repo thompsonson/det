@@ -29,7 +29,6 @@ caching of embeddings to disk, loading them as needed to avoid redundant computa
 requests.
 """
 
-
 import atexit
 import logging
 import os
@@ -66,12 +65,14 @@ class EmbeddingsCache:
                     logger.info(
                         f"Cache loaded successfully from: {self.cache_file_path}"
                     )
+
                     return cache
             except (EOFError, pickle.UnpicklingError):
                 logger.warning(
                     f"Cache file exists but is empty: {self.cache_file_path}"
                 )
                 return {}
+        else:
             logger.info(
                 f"Cache file does not exist: {self.cache_file_path}, creating empty cache file"
             )
@@ -83,9 +84,8 @@ class EmbeddingsCache:
         """Generate embeddings for a list of texts, using cached results where available."""
         embeddings_to_return = []
         texts_without_embeddings = []
-
         for text in texts:
-            if text in self.embeddings_cache:
+            if text in self.embeddings_cache and self.embeddings_cache is not None:
                 logger.debug("Cache hit for text.")
                 embeddings_to_return.append(self.embeddings_cache[text])
             else:

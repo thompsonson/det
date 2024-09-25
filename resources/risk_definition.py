@@ -31,7 +31,8 @@ class RiskDefinition(BaseModel):
     risk_likelihood: Literal[
         "Very Low", "Low", "Moderate", "High", "Very High"
     ] = Field(
-        ..., description="Qualitative rating of the likelihood of the risk occurring."
+        ...,
+        description="Qualitative rating of the likelihood of the risk occurring.",
     )
     risk_impact: Literal["Very Low", "Low", "Moderate", "High", "Very High"] = Field(
         ...,

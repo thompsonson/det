@@ -45,7 +45,6 @@ and understanding of textual data.
 
 """
 
-
 import numpy as np
 
 
