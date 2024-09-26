@@ -68,6 +68,14 @@ class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
         except Exception as e:
             logger.error(f"Error instantiating OpenAI client: {str(e)}")
             self.client = None
+        try:
+            self.client.models.list()
+        except Exception as e:
+            logger.error(
+                f"Error connecting to OpenAI API please check API key: {str(e)}"
+            )
+            self.client = None
+            raise e
 
     def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
