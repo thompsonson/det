@@ -64,6 +64,11 @@ Before using `det`, configure your LLM and embeddings provider API keys
 
 `export OPENAI_API_KEY=sk-makeSureThisIsaRealKey`
 
+for groq to configure groq client API key. 
+
+`export GROQ_API_KEY=gsk-DUMMYKEYISTHIS`
+
+
 ### Basic Usage
 
 To get a list of all the arguments and their descriptions, use:
