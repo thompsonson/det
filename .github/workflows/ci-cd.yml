@@ -87,4 +87,13 @@ jobs:
           echo "versioning and publishing the package"
           poetry config pypi-token.pypi $PYPI_TOKEN
           poetry run semantic-release version
-          poetry publish --skip-existing
+          # Build the package if semantic-release has created a new version
+          poetry build
+
+          # Check if there are any files to publish before running poetry publish
+          if [ "$(ls -A dist)" ]; then
+            echo "Publishing to PyPI..."
+            poetry publish --skip-existing
+          else
+            echo "No files to publish. Skipping poetry publish."
+          fi

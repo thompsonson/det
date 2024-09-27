@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "det"
-version = "0.4.1"
+version = "0.4.2"
 description = "A framework to analyse the consistency of repeated requests to an LLM or LLM based Agent"
 authors = ["Matthew Thompson <thompsonson@gmail.com>"]
 license = "MIT"

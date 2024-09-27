@@ -54,9 +54,40 @@ These visuals provide a glimpse into how the framework processes and presents da
 
 ### Installation
 
+#### Option 1. pipx is recommended
+
+Use pipx for `det` rather than install it on the base python. pipx is awesome for installing and running Python applications in isolated environments.
+
+Get pipx here: https://pipx.pypa.io/stable/
+
+Install `det` using pipx:
+
+```
+pipx install det
+```
+
+#### Option 2. If you live danagerously, chaos is your middle name, or you don't want to use pipx
+
+<details>
+<summary>I understand that this approach heavily depends on the state of my system, it may not work and may result in pythonic module hell induced headaches</summary>
+.
+
+*Are you sure you want to do this?*
+
+<details>
+<summary>I really know what I'm doing or plan on throwing away my computer</summary>
+
+OK, no more checking - fill your boots.
+
 Install `det` using pip:
 
-`pip install det`
+```
+pip install det
+```
+
+</details>
+
+</details>
 
 ### Configuration
 
