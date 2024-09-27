@@ -4,6 +4,46 @@
 
 
 
+## v0.5.0 (2024-09-27)
+
+### Chore
+
+* chore(release): bump version to v0.4.2 ([`2bad3e7`](https://github.com/thompsonson/det/commit/2bad3e7826dd3499f49f0722e6347b3494414e8c))
+
+* chore(release): bump version to v0.4.2 ([`317fd51`](https://github.com/thompsonson/det/commit/317fd51f21484050f09c42ac4fb4b408cfa45349))
+
+* chore: remove OPENAI_API_KEY from the tests ([`5f57035`](https://github.com/thompsonson/det/commit/5f57035ad8d15fc6f600240044f4a4f6c6e0765b))
+
+* chore: remove OPENAI_API_KEY from the tests ([`280e44e`](https://github.com/thompsonson/det/commit/280e44e47c3bf833129320637a2c9c5b7738a570))
+
+### Ci
+
+* ci: fgracefully handle no package to publish ([`dc6d7f9`](https://github.com/thompsonson/det/commit/dc6d7f946f906ea9aaf05dd959d59976029a7e72))
+
+### Documentation
+
+* docs: updated the installation instructions ([`e260e8e`](https://github.com/thompsonson/det/commit/e260e8e87099db0d6ad9baae053cfa347cdea326))
+
+### Feature
+
+* feat: Groq as LLM provider ([`69ef2ec`](https://github.com/thompsonson/det/commit/69ef2ecf0bd945758043808c50cb701b37ec8ded))
+
+### Unknown
+
+* ran ruff format and check ([`9cf6d27`](https://github.com/thompsonson/det/commit/9cf6d273d7deff88eca9460bd9c5f04ea5bfacb0))
+
+* Merge branch &#39;main&#39; into groq_integration ([`95f3334`](https://github.com/thompsonson/det/commit/95f333428916b01cb2e731f4ff7bd6d0d0b88235))
+
+* formatting and embeddings error handling ([`59bfcdc`](https://github.com/thompsonson/det/commit/59bfcdc18429e97cfda1d02a164542eda42f81d3))
+
+* changed the error handling logic ([`d859d9e`](https://github.com/thompsonson/det/commit/d859d9e4be5928180f401991552366936403c05f))
+
+* adding groq api key setup documentation ([`aa8f6c6`](https://github.com/thompsonson/det/commit/aa8f6c6007b0bc34dd192465828b560467295c34))
+
+* ### Feat
+* Feat: Groq LLM provider added
+* Feat: API_key validation for `Openai` and `Groq` added ([`b31be9d`](https://github.com/thompsonson/det/commit/b31be9d6b79312549e8048e5697b71a93a02e3e0))
+
 ## v0.4.1 (2024-09-25)
 
 ### Fix
