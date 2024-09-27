@@ -21,7 +21,12 @@ BaseLLMClient interface, promoting a plug-and-play architecture for text generat
 """
 
 from groq import Groq
+import groq 
+import logging 
+
 from det.llm.base import LLMGeneratorInterface
+
+logger = logging.getLogger(__name__)
 
 
 class GroqClient(LLMGeneratorInterface):
@@ -35,15 +40,22 @@ class GroqClient(LLMGeneratorInterface):
     """
 
     def __init__(self, model: str = "llama3-8b-8192", api_key: str = None):
-        if api_key:
-            self.client = Groq(api_key=api_key)
-        else:
-            self.client = Groq()
-        self.model = model
         try:
+            if api_key:
+                self.client = Groq(api_key=api_key)
+            else:
+                self.client = Groq()
+            self.model = model
             self.client.models.list()
+        except groq.APIConnectionError as e:
+            logger.error(f"The server could not be reached: {e}")
+        except groq.RateLimitError as e:
+            logger.error(f"A 429 status code was received; we should back off a bit: {e}")
+        except groq.APIStatusError as e:
+            logger.error(f"Another non-200-range status code was received: {e}")
         except Exception as e:
-            raise ValueError(f"Error: Invalid API key: {e}")
+            logger.error(f"Error instantiating Groq client: {str(e)}")
+            self.client = None
 
     def generate_response(self, prompt: str, **kwargs):
         try:

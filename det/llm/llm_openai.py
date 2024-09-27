@@ -21,8 +21,11 @@ BaseLLMClient interface, promoting a plug-and-play architecture for text generat
 """
 
 from openai import OpenAI
+import openai 
+import logging 
 
 from det.llm.base import LLMGeneratorInterface
+logger = logging.getLogger(__name__)
 
 
 class OpenAIClient(LLMGeneratorInterface):
@@ -36,15 +39,27 @@ class OpenAIClient(LLMGeneratorInterface):
     """
 
     def __init__(self, model: str = "gpt-3.5-turbo", api_key: str = None):
-        if api_key:
-            self.client = OpenAI(api_key=api_key)
-        else:
-            self.client = OpenAI()
-        self.model = model
         try:
+            if api_key:
+                self.client = OpenAI(api_key=api_key)
+                logger.info("OpenAI client instantiated successfully using api_key.")
+            else:
+                self.client = OpenAI()
+                logger.info("OpenAI client instantiated successfully without api_key.")
+            self.model = model
             self.client.models.list()
+        except openai.APIConnectionError as e:
+            logger.error("The server could not be reached")
+            logger.error(e.__cause__)  # The original exception
+        except openai.RateLimitError as e:
+            logger.error("A 429 status code was received; we should back off a bit.")
+        except openai.APIStatusError as e:
+            logger.error("Another non-200-range status code was received")
+            logger.error(e.status_code)
+            logger.error(e.response)
         except Exception as e:
-            raise ValueError(f"Error: Invalid API key: {e}")
+            logger.error(f"Error instantiating OpenAI client: {str(e)}")
+            self.client = None
 
     def generate_response(self, prompt: str, **kwargs):
         try:
