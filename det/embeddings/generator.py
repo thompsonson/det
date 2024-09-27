@@ -70,9 +70,11 @@ class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
             logger.error("The server could not be reached")
             logger.error(e.__cause__)  # The original exception
         except openai.RateLimitError as e:
-            logger.error("A 429 status code was received; we should back off a bit.")
+            logger.error(
+                f"A 429 status code was received; we should back off a bit.{e}"
+            )
         except openai.APIStatusError as e:
-            logger.error("Another non-200-range status code was received")
+            logger.error(f"Another non-200-range status code was received: {e}")
             logger.error(e.status_code)
             logger.error(e.response)
         except Exception as e:
