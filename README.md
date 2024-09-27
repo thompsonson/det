@@ -9,7 +9,10 @@ Welcome to a LLM Response Analysis Framework! This tool is designed to dive deep
 ## Features
 
 - **Dynamic LLM Integration**
-Seamlessly connect with various LLM providers and models to fetch responses using a flexible architecture.
+Seamlessly connect with various LLM providers and models to fetch responses using a flexible architecture. Following integrations are available.
+   - Openai
+   - Groq
+   - Ollama
 
 - **LangChain Structured Output Chain Analysis**
 Seamlessly connect with a LangChain Structured Output and check for the consistency of responses. [See this documentation for further information.](docs/check_chain/README.md)
@@ -92,6 +95,11 @@ Before using `det`, configure your LLM and embeddings provider API keys
 
 `export OPENAI_API_KEY=sk-makeSureThisIsaRealKey`
 
+for groq to configure groq client API key. 
+
+`export GROQ_API_KEY=gsk-DUMMYKEYISTHIS`
+
+
 ### Basic Usage
 
 To get a list of all the arguments and their descriptions, use:
@@ -108,6 +116,10 @@ det check-responses \
   --embeddings-provider OpenAI \
   --embeddings-model text-embedding-ada-002
 ```
+
+for `Groq` use --llm-provider as `Groq`
+for `Ollama` use --llm-provider as `Ollama`
+
 
 ### LangChain Structured Output Chains
 

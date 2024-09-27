@@ -19,6 +19,7 @@ langchain = "^0.1.12"
 langchain-community = "^0.0.29"
 langchain-openai = "^0.1.1"
 deepdiff = "^6.7.1"
+groq = "^0.11.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.2"
