@@ -5,7 +5,7 @@ from typing import List
 import logging
 
 from openai import OpenAI
-
+import openai
 
 logger = logging.getLogger(__name__)
 
@@ -65,17 +65,19 @@ class OpenAIEmbeddingGenerator(EmbeddingGeneratorInterface):
             else:
                 self.client = OpenAI()
                 logger.info("OpenAI client instantiated successfully without api_key.")
+            self.client.models.list()
+        except openai.APIConnectionError as e:
+            logger.error("The server could not be reached")
+            logger.error(e.__cause__)  # The original exception
+        except openai.RateLimitError as e:
+            logger.error("A 429 status code was received; we should back off a bit.")
+        except openai.APIStatusError as e:
+            logger.error("Another non-200-range status code was received")
+            logger.error(e.status_code)
+            logger.error(e.response)
         except Exception as e:
             logger.error(f"Error instantiating OpenAI client: {str(e)}")
             self.client = None
-        try:
-            self.client.models.list()
-        except Exception as e:
-            logger.error(
-                f"Error connecting to OpenAI API please check API key: {str(e)}"
-            )
-            self.client = None
-            raise e
 
     def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         """

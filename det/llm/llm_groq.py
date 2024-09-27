@@ -21,8 +21,8 @@ BaseLLMClient interface, promoting a plug-and-play architecture for text generat
 """
 
 from groq import Groq
-import groq 
-import logging 
+import groq
+import logging
 
 from det.llm.base import LLMGeneratorInterface
 
@@ -50,7 +50,9 @@ class GroqClient(LLMGeneratorInterface):
         except groq.APIConnectionError as e:
             logger.error(f"The server could not be reached: {e}")
         except groq.RateLimitError as e:
-            logger.error(f"A 429 status code was received; we should back off a bit: {e}")
+            logger.error(
+                f"A 429 status code was received; we should back off a bit: {e}"
+            )
         except groq.APIStatusError as e:
             logger.error(f"Another non-200-range status code was received: {e}")
         except Exception as e:

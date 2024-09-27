@@ -21,10 +21,11 @@ BaseLLMClient interface, promoting a plug-and-play architecture for text generat
 """
 
 from openai import OpenAI
-import openai 
-import logging 
+import openai
+import logging
 
 from det.llm.base import LLMGeneratorInterface
+
 logger = logging.getLogger(__name__)
 
 
